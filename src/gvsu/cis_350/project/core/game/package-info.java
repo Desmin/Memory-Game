@@ -1,4 +1,6 @@
 /**
+ * A package containing classes related to game functions.
+ * 
  * @author Desmin Little
  *
  */

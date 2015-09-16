@@ -10,9 +10,13 @@ import javafx.scene.image.Image;
  */
 public class Card {
 	
-	public Card(Type cardType) {
+	/**
+	 * Default card constructor that instantiates the
+	 * card with the given card type.
+	 * @param cardType
+	 */
+	public Card(CardType cardType) {
 		this.cardType = cardType;
-		this.face = cardType.getFace();
 	}
 	
 	/*
@@ -20,23 +24,27 @@ public class Card {
 	 */
 	public static final Image back = null;
 	
-	private Image face;
+	/**
+	 * The specific {@link CardType} of this card.
+	 */
+	private CardType cardType;
 	
-	private Type cardType;
-	
-	public Type getCardType() {
+	/**
+	 * Retrieves the {@link CardType} of this card.
+	 * @return The {@link CardType} of this card.
+	 */
+	public CardType getCardType() {
 		return cardType;
 	}
-	
-	public Image getBackImage() {
-		return back;
-	}
-	
-	public Image getFaceImage() {
-		return face;
-	}
 
-	public enum Type {
+	/**
+	 * An enum containing all possible card types in the game. Each element
+	 * contains the face image for it's specific type.
+	 * 
+	 * @author Desmin Little
+	 *
+	 */
+	public enum CardType {
 		ONE,
 		TWO,
 		THREE,
@@ -46,8 +54,29 @@ public class Card {
 		SEVEN,
 		EIGHT;
 		
+		/**
+		 * The default constructor requiring an image, which will
+		 * be used as this card type's face.
+		 * @param face The face image of this card type.
+		 */
+		CardType(Image face) {
+			this.face = face;
+		}
+		
+		/**
+		 * Placeholder constructor until we have the images created.
+		 */
+		CardType() {};
+		
+		/**
+		 * This cards face image.
+		 */
 		private Image face;
 		
+		/**
+		 * Retrieves this card type's face.
+		 * @return
+		 */
 		public Image getFace() {
 			return this.face;
 		}

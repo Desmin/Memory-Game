@@ -1,7 +1,5 @@
 package gvsu.cis_350.project.core;
 
-import java.io.Serializable;
-
 /**
  * The {@link Player} class represents a single user in the game.
  * 

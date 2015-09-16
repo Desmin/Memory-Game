@@ -1,4 +1,6 @@
 /**
+ * A package containing classes performing specific IO operations.
+ * 
  * @author Desmin Little
  *
  */
