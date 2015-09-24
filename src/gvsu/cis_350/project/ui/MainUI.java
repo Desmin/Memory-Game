@@ -1,14 +1,29 @@
 package gvsu.cis_350.project.ui;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import gvsu.cis_350.project.core.Card;
+import gvsu.cis_350.project.utils.Utilities;
 
 public class MainUI extends JFrame implements ActionListener{
 	
 	private String userName;
 	private JPanel mainPanel, gridPanel, topPanel, bottomPanel;
 	private JLabel[][] cardPosition;
+	private List<Card> cards;
 	private JLabel playerNameLabel, playerScoreLabel, messageLabel, gameTitleLabel; 
 	private JMenuBar menuBar;
 	private JMenu fileMenu, 
@@ -20,13 +35,13 @@ public class MainUI extends JFrame implements ActionListener{
 					  aboutItem,
 					  versionItem;
 
+	
 	private ImageIcon bananaImg;
 	
 	public MainUI(String userName){
 		
 		this.userName = userName;
 		bananaImg = new ImageIcon("bananaImg.jpg");
-	
 		//Create three panels
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -68,7 +83,7 @@ public class MainUI extends JFrame implements ActionListener{
 		aboutItem.addActionListener(this);
 		versionItem.addActionListener(this);
 		
-		//Adds the labels to the panel
+		/*//Adds the labels to the panel
 		cardPosition = new JLabel[4][4];
 		for(int i = 0; i < cardPosition.length; i++){
 			for(int j = 0; j < cardPosition[i].length; j++){
@@ -77,7 +92,14 @@ public class MainUI extends JFrame implements ActionListener{
 				gridPanel.add(cardPosition[i][j]);
 				cardPosition[i][j].setIcon(bananaImg);
 			}
-		}
+		}*/
+		
+		cards = Utilities.fillList();
+		
+		cards.forEach((card) -> {
+			gridPanel.add(card);
+		});
+		
 		Font f = new Font("Courier", Font.BOLD, 20);
 		
 		playerNameLabel = new JLabel("Player Name: " + userName, SwingConstants.LEFT);

@@ -1,6 +1,6 @@
 package gvsu.cis_350.project.ui;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 
 public class DialogUI {
@@ -35,6 +35,6 @@ public class DialogUI {
 	
 	//Main method starts the game
 	public static void main(String[] args){
-		DialogUI dialog= new DialogUI();
+		new DialogUI();
 	}
 }

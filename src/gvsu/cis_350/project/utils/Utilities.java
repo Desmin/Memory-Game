@@ -1,10 +1,14 @@
 package gvsu.cis_350.project.utils;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.swing.SwingConstants;
+
 import gvsu.cis_350.project.core.Card;
+import gvsu.cis_350.project.core.Card.CardType;
 
 /**
  * Utilities will house utility methods for various use throughout
@@ -28,6 +32,15 @@ public final class Utilities {
 			randomizedCards.offer(cards.remove(random.nextInt(cards.size())));
 		}
 		return randomizedCards;
+	}
+	
+	public static ArrayList<Card> fillList() {
+		ArrayList<Card> list = new ArrayList<>();
+		for (CardType type : CardType.values()) {
+			list.add(new Card("", SwingConstants.CENTER, type));
+			list.add(new Card("", SwingConstants.CENTER, type));
+		}		
+		return list;
 	}
 
 }
