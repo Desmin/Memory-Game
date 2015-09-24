@@ -3,8 +3,6 @@ package gvsu.cis_350.project.core.game;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import gvsu.cis_350.project.core.Player;
-
 public class MemoryGame implements Game {
 
 	/**
@@ -56,6 +54,10 @@ public class MemoryGame implements Game {
 	@Override
 	public boolean isPlayer() {
 		return false;
+	}
+	
+	public int getPoints() {
+		return points;
 	}
 
 

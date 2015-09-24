@@ -6,8 +6,7 @@ import java.io.IOException;
 
 import gvsu.cis_350.project.core.Node;
 import gvsu.cis_350.project.core.Player;
-import gvsu.cis_350.project.core.game.MemoryGame;
-import javafx.scene.control.Button;
+//import gvsu.cis_350.project.core.game.MemoryGame;
 
 /**
  * A class used for the saving and loading of files to and from the game.
@@ -37,7 +36,7 @@ public class FileIO {
 			out.writeInt(player.getWins());
 			out.writeInt(player.getLosses());
 		} else {
-			MemoryGame game = (MemoryGame)node;
+			//MemoryGame game = (MemoryGame)node;
 			//save current points
 			//save cards and their states
 		}

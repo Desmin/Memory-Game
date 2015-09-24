@@ -7,12 +7,13 @@ import java.util.Queue;
 import gvsu.cis_350.project.core.Card;
 
 /**
- * A class to randomize the order of a list of cards.
+ * Utilities will house utility methods for various use throughout
+ * the project.
  * 
  * @author Desmin Little
  *
  */
-public final class CardRandomizer {
+public final class Utilities {
 	
 	/**
 	 * Randomizes the order of the given cards, then returns a {@link Queue} containing the new order.
