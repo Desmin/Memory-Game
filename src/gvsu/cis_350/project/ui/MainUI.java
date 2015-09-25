@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -16,13 +15,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import gvsu.cis_350.project.core.Card;
+import gvsu.cis_350.project.core.game.Game;
+import gvsu.cis_350.project.core.game.GameDifficulty;
+import gvsu.cis_350.project.core.game.MemoryGame;
 import gvsu.cis_350.project.utils.Utilities;
 
 public class MainUI extends JFrame implements ActionListener{
 	
-	private String userName;
 	private JPanel mainPanel, gridPanel, topPanel, bottomPanel;
-	private JLabel[][] cardPosition;
 	private List<Card> cards;
 	private JLabel playerNameLabel, playerScoreLabel, messageLabel, gameTitleLabel; 
 	private JMenuBar menuBar;
@@ -30,18 +30,11 @@ public class MainUI extends JFrame implements ActionListener{
 				  aboutMenu;
 	private JMenuItem newGameItem, 
 					  quitItem, 
-					  saveItem, 
-					  loadItem,
 					  aboutItem,
 					  versionItem;
-
 	
-	private ImageIcon bananaImg;
-	
-	public MainUI(String userName){
+	public MainUI(String name){
 		
-		this.userName = userName;
-		bananaImg = new ImageIcon("bananaImg.jpg");
 		//Create three panels
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -58,8 +51,6 @@ public class MainUI extends JFrame implements ActionListener{
 		fileMenu = new JMenu("File");
 		aboutMenu = new JMenu("About");
 		newGameItem = new JMenuItem("New Game");
-		saveItem = new JMenuItem("Save Game");
-		loadItem = new JMenuItem("Load Game");
 		quitItem = new JMenuItem("Quit");
 		aboutItem = new JMenuItem("About Game");
 		versionItem = new JMenuItem("Version");
@@ -69,32 +60,17 @@ public class MainUI extends JFrame implements ActionListener{
 		menuBar.add(fileMenu);
 		menuBar.add(aboutMenu);
 		fileMenu.add(newGameItem);
-		fileMenu.add(saveItem);
-		fileMenu.add(loadItem);
 		fileMenu.add(quitItem);
 		aboutMenu.add(aboutItem);
 		aboutMenu.add(versionItem);
 		
 		//Adds action listeners
 		newGameItem.addActionListener(this);
-		saveItem.addActionListener(this);
-		loadItem.addActionListener(this);
 		quitItem.addActionListener(this);
 		aboutItem.addActionListener(this);
 		versionItem.addActionListener(this);
 		
-		/*//Adds the labels to the panel
-		cardPosition = new JLabel[4][4];
-		for(int i = 0; i < cardPosition.length; i++){
-			for(int j = 0; j < cardPosition[i].length; j++){
-				cardPosition[i][j] = new JLabel("", SwingConstants.CENTER);
-				cardPosition[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
-				gridPanel.add(cardPosition[i][j]);
-				cardPosition[i][j].setIcon(bananaImg);
-			}
-		}*/
-		
-		cards = Utilities.fillList();
+		cards = Utilities.fillList(GameDifficulty.EASY);
 		
 		cards.forEach((card) -> {
 			gridPanel.add(card);
@@ -102,7 +78,7 @@ public class MainUI extends JFrame implements ActionListener{
 		
 		Font f = new Font("Courier", Font.BOLD, 20);
 		
-		playerNameLabel = new JLabel("Player Name: " + userName, SwingConstants.LEFT);
+		playerNameLabel = new JLabel("Player Name: " + name, SwingConstants.LEFT);
 		playerNameLabel.setFont(f);
 		
 		playerScoreLabel = new JLabel("    Player Score: 0", SwingConstants.LEFT);
@@ -135,17 +111,12 @@ public class MainUI extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Game game = MemoryGame.getInstance();
 		if(e.getSource() == newGameItem){
-			
-		}
-		if(e.getSource() == saveItem){
-			
-		}
-		if(e.getSource() == loadItem){
-			
+			game.initialize(game.getPlayer().getName());
 		}
 		if(e.getSource() == quitItem){
-			
+			game.shutdown(false);
 		}
 		if(e.getSource() == aboutItem){
 			

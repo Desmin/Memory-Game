@@ -1,23 +1,33 @@
 package gvsu.cis_350.project.core.game;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MemoryGame implements Game {
+import gvsu.cis_350.project.core.Player;
+import gvsu.cis_350.project.core.io.FileIO;
+import gvsu.cis_350.project.ui.MainUI;
 
-	/**
-	 * Generated UID for serialization. Do not remove!
-	 */
-	private static final long serialVersionUID = -612405127231085808L;
+public class MemoryGame implements Game {
 	
 	private Logger log = Logger.getLogger(this.toString());
 	
 	private int points = 0;
 	
+	private MainUI gameFrame;
+	private Player player;
+	
+	private static MemoryGame instance;
+	
+	public static MemoryGame getInstance() {
+		return instance;
+	}
+	
 	@Override
-	public boolean initialize() {
-		//check for saved game, load if available
-		//build UI
+	public boolean initialize(String username) {
+		instance = this;
+		this.player = FileIO.loadPlayerData(username);
+		gameFrame = new MainUI(username);
 		log.log(Level.INFO, "UI successfully built.");
 		return true;
 	}
@@ -26,10 +36,6 @@ public class MemoryGame implements Game {
 	public void reset() {
 		log.log(Level.INFO, "Resetting game...");
 		points = 0;
-		if (initialize())
-			log.log(Level.INFO, "Successfully reset game!");
-		else
-			log.log(Level.SEVERE, "Something went wrong!");
 	}
 
 	@Override
@@ -41,23 +47,25 @@ public class MemoryGame implements Game {
 	}
 
 	@Override
-	public boolean shutdown() {
-		//if the game isn't finished prompt to save it
-			//if yes, save it
-		//if the game was loaded from a save and is now finished, delete the useless save
-		//save player data (wins/losses)
-		//clean and close UI
-		//terminate program
+	public boolean shutdown(boolean restarting) {
+		try {
+			FileIO.savePlayerData(player);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gameFrame.dispose();
+		if (!restarting)
+			System.exit(1);
 		return true;
-	}
-
-	@Override
-	public boolean isPlayer() {
-		return false;
 	}
 	
 	public int getPoints() {
 		return points;
+	}
+
+	@Override
+	public Player getPlayer() {
+		return player;
 	}
 
 

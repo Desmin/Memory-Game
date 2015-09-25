@@ -2,6 +2,8 @@ package gvsu.cis_350.project.ui;
 
 import javax.swing.JOptionPane;
 
+import gvsu.cis_350.project.core.game.MemoryGame;
+
 
 public class DialogUI {
 
@@ -10,9 +12,6 @@ public class DialogUI {
 	
 	//Message to player
 	private String message;
-	
-	//The user interface
-	private MainUI mainUserInterface;
 	
 	//Constructor shows dialog to start game
 	public DialogUI(){
@@ -28,9 +27,7 @@ public class DialogUI {
 		while(userName.equals(empty))
 			userName = JOptionPane.showInputDialog(message);
 		
-		//Starts the game interface
-		mainUserInterface = new MainUI(userName);
-		
+		new MemoryGame().initialize(userName);
 	}
 	
 	//Main method starts the game

@@ -1,12 +1,24 @@
 package gvsu.cis_350.project.core;
 
+import java.io.Serializable;
+
 /**
  * The {@link Player} class represents a single user in the game.
  * 
  * @author Desmin Little
  *
  */
-public class Player implements Node {
+public class Player implements Serializable {
+	
+	public Player(String name, int wins, int losses) {
+		this.name = name;
+		update(wins, losses);
+	}
+	
+	public void update(int wins, int losses) {
+		this.wins = wins;
+		this.losses = losses;
+	}
 
 	/**
 	 * The serialization UID. Do not change!
@@ -27,10 +39,5 @@ public class Player implements Node {
 	
 	public String getName() {
 		return name;
-	}
-
-	@Override
-	public boolean isPlayer() {
-		return true;
 	}
 }

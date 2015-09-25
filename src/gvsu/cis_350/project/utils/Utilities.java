@@ -9,6 +9,7 @@ import javax.swing.SwingConstants;
 
 import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.Card.CardType;
+import gvsu.cis_350.project.core.game.GameDifficulty;
 
 /**
  * Utilities will house utility methods for various use throughout
@@ -34,11 +35,15 @@ public final class Utilities {
 		return randomizedCards;
 	}
 	
-	public static ArrayList<Card> fillList() {
+	public static ArrayList<Card> fillList(GameDifficulty difficulty) {
+		int limit = difficulty.getNumberOfCards();
 		ArrayList<Card> list = new ArrayList<>();
 		for (CardType type : CardType.values()) {
-			list.add(new Card("", SwingConstants.CENTER, type));
-			list.add(new Card("", SwingConstants.CENTER, type));
+			if ((type.ordinal()+1) <= limit) {
+				Card card = new Card("", SwingConstants.CENTER, type);
+				list.add(card);
+				list.add(card);
+			}
 		}		
 		return list;
 	}

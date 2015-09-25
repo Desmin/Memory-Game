@@ -1,10 +1,12 @@
 package gvsu.cis_350.project.core.io;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
-import gvsu.cis_350.project.core.Node;
 import gvsu.cis_350.project.core.Player;
 //import gvsu.cis_350.project.core.game.MemoryGame;
 
@@ -19,41 +21,48 @@ public class FileIO {
 	/**
 	 * The program's save path for data files.
 	 */
-	private static final String SAVE_PATH = "./data/saves/";
+	private static final String SAVE_PATH = "./data/";
 	
 	/**
 	 * Serializes important information about the given node into .mgd file.
 	 * 
 	 * @param node The node being saved.
-	 * @return True if the save is successful, false otherwise.
 	 * @throws IOException
 	 */
-	public static final boolean save(Node node) throws IOException {
-		FileOutputStream file = new FileOutputStream(SAVE_PATH + (node.isPlayer() ? "player/" + ((Player)node).getName() : "gamesave/game") + ".mgd");
+	public static final void savePlayerData(Player player) throws IOException {
+		FileOutputStream file = new FileOutputStream(SAVE_PATH + player.getName() + ".mgd");
 		DataOutputStream out = new DataOutputStream(file);
-		if (node.isPlayer()) {
-			Player player = (Player)node;
-			out.writeInt(player.getWins());
-			out.writeInt(player.getLosses());
-		} else {
-			//MemoryGame game = (MemoryGame)node;
-			//save current points
-			//save cards and their states
-		}
+		out.writeInt(player.getWins());
+		out.writeInt(player.getLosses());
 		out.close();
 		file.close();
-		return true;
 	}
 	
 	/**
 	 * Deserializes a file and loads that information into a node.
-	 * @return A node with the loaded information.
+	 * 
+	 * @param name The user we're trying to load previous data of.
 	 * @throws IOException
 	 */
-	public static final Node load() throws IOException {
-		//FileInputStream file = new FileInputStream()
-		return null;
+	public static final Player loadPlayerData(String name) {
+		Player newPlayer = new Player(name, 0, 0);
+		FileInputStream file;
+		try {
+			file = new FileInputStream(SAVE_PATH + name + ".mgd");
+			if (Objects.nonNull(file)) {
+				DataInputStream in = new DataInputStream(file);
+				newPlayer.update(in.readInt(), in.readInt());
+				in.close();
+			}
+		} catch (IOException e) {
+			return newPlayer;
+		}
+		try {
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return newPlayer;
 	}
-	
 
 }

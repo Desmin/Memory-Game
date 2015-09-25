@@ -23,21 +23,12 @@ public class Card extends JLabel implements MouseListener {
 		this.setIcon(back);
 	}
 	
-	/**
-	 * Default card constructor that instantiates the
-	 * card with the given card type.
-	 * @param cardType
-	 */
-	public Card(CardType cardType) {
-		this.cardType = cardType;
-	}
-	
-	private static final String imgPath = "src/resources/";
+	private static final String IMG_PATH = "resources/";
 	
 	/*
 	 * Static and final because all cards will share the same back image.
 	 */
-	private static final ImageIcon back = new ImageIcon("bananaImg.jpg");
+	private static final ImageIcon back = new ImageIcon(IMG_PATH + "questionImg.jpg");
 	
 	/**
 	 * The specific {@link CardType} of this card.
@@ -60,7 +51,7 @@ public class Card extends JLabel implements MouseListener {
 	 *
 	 */
 	public enum CardType {
-		ONE(new ImageIcon("bananaImg.jpg")),
+		BANANA(new ImageIcon(IMG_PATH + "bananaImg.jpg")),
 		TWO,
 		THREE,
 		FOUR,
