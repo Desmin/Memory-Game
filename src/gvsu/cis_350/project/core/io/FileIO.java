@@ -6,9 +6,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
+
+import com.sun.istack.internal.logging.Logger;
 
 import gvsu.cis_350.project.core.Player;
-//import gvsu.cis_350.project.core.game.MemoryGame;
 
 /**
  * A class used for the saving and loading of files to and from the game.
@@ -23,13 +25,15 @@ public class FileIO {
 	 */
 	private static final String SAVE_PATH = "./data/";
 	
+	private static Logger logger = Logger.getLogger(FileIO.class);
+	
 	/**
-	 * Serializes important information about the given node into .mgd file.
-	 * 
-	 * @param node The node being saved.
+	 * Serializes a Player's data.
+	 * @param player The Player whose data we'll be saving.
 	 * @throws IOException
 	 */
 	public static final void savePlayerData(Player player) throws IOException {
+		logger.log(Level.INFO, "Saving data for user: " + player.getName());
 		FileOutputStream file = new FileOutputStream(SAVE_PATH + player.getName() + ".mgd");
 		DataOutputStream out = new DataOutputStream(file);
 		out.writeInt(player.getWins());
@@ -39,12 +43,13 @@ public class FileIO {
 	}
 	
 	/**
-	 * Deserializes a file and loads that information into a node.
-	 * 
-	 * @param name The user we're trying to load previous data of.
-	 * @throws IOException
+	 * Loads player data using the given name.
+	 * @param name The username of the player we wish to load.
+	 * @return The Player with previously saved data, or if previous data
+	 * doesn't exist a new Player.
 	 */
 	public static final Player loadPlayerData(String name) {
+		logger.log(Level.INFO, "Attempting to find user: " + name);
 		Player newPlayer = new Player(name, 0, 0);
 		FileInputStream file;
 		try {
@@ -53,8 +58,10 @@ public class FileIO {
 				DataInputStream in = new DataInputStream(file);
 				newPlayer.update(in.readInt(), in.readInt());
 				in.close();
+				logger.log(Level.INFO, "User " + name + " found!");
 			}
 		} catch (IOException e) {
+			logger.log(Level.INFO, "User not found, creating new user: " + name);
 			return newPlayer;
 		}
 		try {

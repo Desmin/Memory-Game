@@ -113,7 +113,7 @@ public class MainUI extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Game game = MemoryGame.getInstance();
 		if(e.getSource() == newGameItem){
-			game.initialize(game.getPlayer().getName());
+			game.shutdown(true);
 		}
 		if(e.getSource() == quitItem){
 			game.shutdown(false);

@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  * Represents a single card in the game. This card will have an associated match.
@@ -16,8 +17,13 @@ import javax.swing.JLabel;
  */
 public class Card extends JLabel implements MouseListener {
 	
-	public Card(String text, int alignment, CardType type) {
-		super(text, alignment);
+	/**
+	 * Default Card constructor. Builds a card witht he given
+	 * CardType.
+	 * @param type
+	 */
+	public Card(CardType type) {
+		super("", SwingConstants.CENTER);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		this.cardType = type;
 		this.setIcon(back);
@@ -28,7 +34,7 @@ public class Card extends JLabel implements MouseListener {
 	/*
 	 * Static and final because all cards will share the same back image.
 	 */
-	private static final ImageIcon back = new ImageIcon(IMG_PATH + "questionImg.jpg");
+	private static final ImageIcon back = new ImageIcon("bananaImg.jpg");
 	
 	/**
 	 * The specific {@link CardType} of this card.
@@ -94,6 +100,9 @@ public class Card extends JLabel implements MouseListener {
 		
 	}
 
+	/*
+	 * Unused MouseListener methods.
+	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 

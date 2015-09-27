@@ -12,9 +12,10 @@ public interface Game {
 	
 	/**
 	 * Sets up and runs a new game.
-	 * @return True if successful, false otherwise.
+	 * 
+	 * @param username The user we're initializing the game with.
 	 */
-	public boolean initialize(String username);
+	public void initialize(String username);
 	
 	/**
 	 * Resets the current game and starts a new one.
@@ -30,11 +31,15 @@ public interface Game {
 	public boolean update();
 	
 	/**
-	 * Saves and shuts down the current game.
-	 * @return True if successful, false otherwise.
+	 * Shuts down the game with the intent to start over or exit the program.
+	 * @param restarting Whether or not we'll be restarting the game.
 	 */
-	public boolean shutdown(boolean restarting);
+	public void shutdown(boolean restarting);
 	
+	/**
+	 * Gets the Player associated with this game.
+	 * @return The Player.
+	 */
 	public Player getPlayer();
 
 }

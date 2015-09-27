@@ -3,9 +3,8 @@ package gvsu.cis_350.project.utils;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
-
-import javax.swing.SwingConstants;
 
 import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.Card.CardType;
@@ -26,7 +25,7 @@ public final class Utilities {
 	 * @param cards A {@link LinkedList} of cards to be randomized.
 	 * @return A {@link Queue} with a randomized order of cards.
 	 */
-	public static Queue<Card> randomize(LinkedList<Card> cards) {
+	public static Queue<Card> randomize(List<Card> cards) {
 		Queue<Card> randomizedCards = new LinkedList<>();
 		SecureRandom random = new SecureRandom();
 		while (!cards.isEmpty()) {
@@ -40,7 +39,7 @@ public final class Utilities {
 		ArrayList<Card> list = new ArrayList<>();
 		for (CardType type : CardType.values()) {
 			if ((type.ordinal()+1) <= limit) {
-				Card card = new Card("", SwingConstants.CENTER, type);
+				Card card = new Card(type);
 				list.add(card);
 				list.add(card);
 			}

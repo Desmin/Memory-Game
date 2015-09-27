@@ -10,7 +10,7 @@ import gvsu.cis_350.project.ui.MainUI;
 
 public class MemoryGame implements Game {
 	
-	private Logger log = Logger.getLogger(this.toString());
+	private Logger log = Logger.getLogger(this.getClass().getName());
 	
 	private int points = 0;
 	
@@ -24,18 +24,19 @@ public class MemoryGame implements Game {
 	}
 	
 	@Override
-	public boolean initialize(String username) {
+	public void initialize(String username) {
 		instance = this;
 		this.player = FileIO.loadPlayerData(username);
+		log.log(Level.INFO, "Building gameframe...");
 		gameFrame = new MainUI(username);
-		log.log(Level.INFO, "UI successfully built.");
-		return true;
+		log.log(Level.INFO, "Gameframe successfully built.");
 	}
 
 	@Override
 	public void reset() {
 		log.log(Level.INFO, "Resetting game...");
 		points = 0;
+		initialize(player.getName());
 	}
 
 	@Override
@@ -47,16 +48,19 @@ public class MemoryGame implements Game {
 	}
 
 	@Override
-	public boolean shutdown(boolean restarting) {
+	public void shutdown(boolean restarting) {
 		try {
 			FileIO.savePlayerData(player);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Error saving user data!", e);
 		}
+		log.log(Level.INFO, "Destroying gameframe...");
 		gameFrame.dispose();
-		if (!restarting)
+		if (!restarting) {
+			log.log(Level.INFO, "Shutting program down...");
 			System.exit(1);
-		return true;
+		} else
+			reset();
 	}
 	
 	public int getPoints() {
