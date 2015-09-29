@@ -18,7 +18,7 @@ import javax.swing.SwingConstants;
 public class Card extends JLabel implements MouseListener {
 	
 	/**
-	 * Default Card constructor. Builds a card witht he given
+	 * Default Card constructor. Builds a card with the given
 	 * CardType.
 	 * @param type
 	 */
@@ -29,12 +29,12 @@ public class Card extends JLabel implements MouseListener {
 		this.setIcon(back);
 	}
 	
-	private static final String IMG_PATH = "resources/";
+	private static final String IMG_PATH = "resource/";
 	
-	/*
+	/**
 	 * Static and final because all cards will share the same back image.
 	 */
-	private static final ImageIcon back = new ImageIcon("bananaImg.jpg");
+	private static final ImageIcon back = new ImageIcon("questionImg.png");
 	
 	/**
 	 * The specific {@link CardType} of this card.
@@ -57,14 +57,14 @@ public class Card extends JLabel implements MouseListener {
 	 *
 	 */
 	public enum CardType {
-		BANANA(new ImageIcon(IMG_PATH + "bananaImg.jpg")),
-		TWO,
-		THREE,
-		FOUR,
-		FIVE,
-		SIX,
-		SEVEN,
-		EIGHT;
+		ONE(new ImageIcon("bananaImg.jpg")),
+		TWO(new ImageIcon("orangeImg.jpg")),
+		THREE(new ImageIcon("redAppleImg.jpg")),
+		FOUR(new ImageIcon("greenAppleImg.jpg")),
+		FIVE(new ImageIcon("pineappleImg.jpg")),
+		SIX(new ImageIcon("strawberryImg.jpg")),
+		SEVEN(new ImageIcon("grapesImg.jpg")),
+		EIGHT(new ImageIcon("cherryImg.jpg"));
 		
 		/**
 		 * The default constructor requiring an image, which will
