@@ -39,9 +39,8 @@ public final class Utilities {
 		ArrayList<Card> list = new ArrayList<>();
 		for (CardType type : CardType.values()) {
 			if ((type.ordinal()+1) <= limit) {
-				Card card = new Card(type);
-				list.add(card);
-				list.add(card);
+				list.add(new Card(type));
+				list.add(new Card(type));
 			}
 		}		
 		return list;
