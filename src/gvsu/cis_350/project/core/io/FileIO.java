@@ -2,6 +2,7 @@ package gvsu.cis_350.project.core.io;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,12 +35,16 @@ public class FileIO {
 	 */
 	public static final void savePlayerData(Player player) throws IOException {
 		logger.log(Level.INFO, "Saving data for user: " + player.getName());
-		FileOutputStream file = new FileOutputStream(SAVE_PATH + player.getName() + ".mgd");
-		DataOutputStream out = new DataOutputStream(file);
+		File dir = new File (SAVE_PATH);
+		if (!dir.exists())
+			dir.mkdir();
+		FileOutputStream fO = new FileOutputStream(SAVE_PATH + player.getName() + ".mgd");
+		
+		DataOutputStream out = new DataOutputStream(fO);
 		out.writeInt(player.getWins());
 		out.writeInt(player.getLosses());
 		out.close();
-		file.close();
+		fO.close();
 	}
 	
 	/**

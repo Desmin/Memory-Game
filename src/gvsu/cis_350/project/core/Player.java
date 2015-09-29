@@ -40,4 +40,13 @@ public class Player implements Serializable {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Player) {
+			Player player = (Player)obj;
+			return this.wins == player.wins && this.losses == player.losses && this.name == player.name;
+		}
+		return false;
+	}
 }
