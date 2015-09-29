@@ -47,6 +47,7 @@ public class Player implements Serializable {
 			Player player = (Player)obj;
 			return this.wins == player.wins && this.losses == player.losses && this.name == player.name;
 		}
+		
 		return false;
 	}
 }

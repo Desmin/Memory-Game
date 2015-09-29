@@ -114,4 +114,15 @@ public class Card extends JLabel implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Card){
+			Card card = (Card)obj;
+			return this.cardType == card.cardType;
+		}
+		return false;
+	}
+
 }
