@@ -42,7 +42,6 @@ public class FileIO {
 		
 		DataOutputStream out = new DataOutputStream(fO);
 		out.writeInt(player.getWins());
-		out.writeInt(player.getLosses());
 		out.close();
 		fO.close();
 	}
@@ -55,13 +54,13 @@ public class FileIO {
 	 */
 	public static final Player loadPlayerData(String name) {
 		logger.log(Level.INFO, "Attempting to find user: " + name);
-		Player newPlayer = new Player(name, 0, 0);
+		Player newPlayer = new Player(name, 0);
 		FileInputStream file;
 		try {
 			file = new FileInputStream(SAVE_PATH + name + ".mgd");
 			if (Objects.nonNull(file)) {
 				DataInputStream in = new DataInputStream(file);
-				newPlayer.update(in.readInt(), in.readInt());
+				newPlayer.update(in.readInt());
 				in.close();
 				logger.log(Level.INFO, "User " + name + " found!");
 			}

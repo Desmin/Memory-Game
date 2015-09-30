@@ -4,7 +4,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.Card.CardType;
@@ -20,16 +19,16 @@ import gvsu.cis_350.project.core.game.GameDifficulty;
 public final class Utilities {
 	
 	/**
-	 * Randomizes the order of the given cards, then returns a {@link Queue} containing the new order.
+	 * Randomizes the order of the given cards, then returns a {@link List} containing the new order.
 	 * 
 	 * @param cards A {@link LinkedList} of cards to be randomized.
-	 * @return A {@link Queue} with a randomized order of cards.
+	 * @return A {@link List} with a randomized order of cards.
 	 */
-	public static Queue<Card> randomize(List<Card> cards) {
-		Queue<Card> randomizedCards = new LinkedList<>();
+	public static List<Card> randomize(List<Card> cards) {
+		List<Card> randomizedCards = new LinkedList<>();
 		SecureRandom random = new SecureRandom();
 		while (!cards.isEmpty()) {
-			randomizedCards.offer(cards.remove(random.nextInt(cards.size())));
+			randomizedCards.add(cards.remove(random.nextInt(cards.size())));
 		}
 		return randomizedCards;
 	}

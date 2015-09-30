@@ -1,5 +1,6 @@
 package gvsu.cis_350.project.core.game;
 
+import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.Player;
 
 /**
@@ -15,7 +16,7 @@ public interface Game {
 	 * 
 	 * @param username The user we're initializing the game with.
 	 */
-	public void initialize(String username);
+	public void initialize(String username, GameDifficulty difficulty);
 	
 	/**
 	 * Resets the current game and starts a new one.
@@ -26,9 +27,8 @@ public interface Game {
 	 * Updates the user interface and other important variables when certain events
 	 * take place in the game.
 	 * 
-	 * @return True if successful, false otherwise.
 	 */
-	public boolean update();
+	public void onCardClick(Card card);
 	
 	/**
 	 * Shuts down the game with the intent to start over or exit the program.

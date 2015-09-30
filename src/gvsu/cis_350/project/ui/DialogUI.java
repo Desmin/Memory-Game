@@ -2,6 +2,7 @@ package gvsu.cis_350.project.ui;
 
 import javax.swing.JOptionPane;
 
+import gvsu.cis_350.project.core.game.GameDifficulty;
 import gvsu.cis_350.project.core.game.MemoryGame;
 
 
@@ -27,7 +28,7 @@ public class DialogUI {
 		while(userName.equals(empty))
 			userName = JOptionPane.showInputDialog(message);
 		
-		new MemoryGame().initialize(userName);
+		new MemoryGame().initialize(userName, GameDifficulty.EASY);
 	}
 	
 	//Main method starts the game

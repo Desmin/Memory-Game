@@ -9,12 +9,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import gvsu.cis_350.project.core.game.MemoryGame;
+
 /**
  * Represents a single card in the game. This card will have an associated match.
  * 
  * @author Desmin Little
  *
  */
+@SuppressWarnings("serial")
 public class Card extends JLabel implements MouseListener {
 	
 	/**
@@ -26,20 +29,32 @@ public class Card extends JLabel implements MouseListener {
 		super("", SwingConstants.CENTER);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		this.cardType = type;
-		this.setIcon(back);
+		this.setIcon(BACK);
+		this.addMouseListener(this);
 	}
 	
-	private static final String IMG_PATH = "resource/";
+	private static final String IMG_PATH = "resources/";
 	
 	/**
 	 * Static and final because all cards will share the same back image.
 	 */
-	private static final ImageIcon back = new ImageIcon("questionImg.png");
+	public static final ImageIcon BACK = new ImageIcon(IMG_PATH + "questionImg.png");
+	public static final ImageIcon BLANK = new ImageIcon(IMG_PATH + "blankImg.png");
 	
 	/**
 	 * The specific {@link CardType} of this card.
 	 */
 	private CardType cardType;
+	
+	private boolean clicked = false;
+	
+	public boolean hasBeenClicked() {
+		return clicked;
+	}
+	
+	public void setHasBeenClicked(boolean flag) {
+		this.clicked = flag;
+	}
 	
 	/**
 	 * Retrieves the {@link CardType} of this card.
@@ -57,14 +72,14 @@ public class Card extends JLabel implements MouseListener {
 	 *
 	 */
 	public enum CardType {
-		ONE(new ImageIcon("bananaImg.jpg")),
-		TWO(new ImageIcon("orangeImg.jpg")),
-		THREE(new ImageIcon("redAppleImg.jpg")),
-		FOUR(new ImageIcon("greenAppleImg.jpg")),
-		FIVE(new ImageIcon("pineappleImg.jpg")),
-		SIX(new ImageIcon("strawberryImg.jpg")),
-		SEVEN(new ImageIcon("grapesImg.jpg")),
-		EIGHT(new ImageIcon("cherryImg.jpg"));
+		BANANA(new ImageIcon(IMG_PATH + "bananaImg.jpg")),
+		ORANGE(new ImageIcon(IMG_PATH + "orangeImg.jpg")),
+		RED_APPLE(new ImageIcon(IMG_PATH + "redAppleImg.jpg")),
+		GREEN_APPLE(new ImageIcon(IMG_PATH + "greenAppleImg.png")),
+		PINEAPPLE(new ImageIcon(IMG_PATH + "pineappleImg.png")),
+		STRAWBERRY(new ImageIcon(IMG_PATH + "strawberryImg.png")),
+		GRAPES(new ImageIcon(IMG_PATH + "grapesImg.jpg")),
+		CHERRY(new ImageIcon(IMG_PATH + "cherryImg.png"));
 		
 		/**
 		 * The default constructor requiring an image, which will
@@ -74,11 +89,6 @@ public class Card extends JLabel implements MouseListener {
 		CardType(ImageIcon face) {
 			this.face = face;
 		}
-		
-		/**
-		 * Placeholder constructor until we have the images created.
-		 */
-		CardType() {};
 		
 		/**
 		 * This cards face image.
@@ -93,11 +103,25 @@ public class Card extends JLabel implements MouseListener {
 			return this.face;
 		}
 	}
+	
+	public void flip() {
+		this.setBackground(Color.cyan);
+		this.setIcon(getCardType().getFace());
+		this.setHasBeenClicked(true);
+	}
+	
+	public void reset() {
+		this.setBackground(Color.white);
+		if (this.hasBeenClicked()) {
+			this.setIcon(BLANK);
+			return;
+		}
+		this.setIcon(BACK);
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		MemoryGame.getInstance().onCardClick((Card)e.getSource());
 	}
 
 	/*

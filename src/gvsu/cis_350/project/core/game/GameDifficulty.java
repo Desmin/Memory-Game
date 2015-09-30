@@ -13,4 +13,8 @@ public enum GameDifficulty {
 	public int getNumberOfCards() {
 		return associatedCardNumber;
 	}
+	
+	public int getPointsToWin() {
+		return getNumberOfCards() / 2;
+	}
 }

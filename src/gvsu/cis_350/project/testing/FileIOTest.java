@@ -1,30 +1,41 @@
 package gvsu.cis_350.project.testing;
 
-import static org.junit.Assert.*;
-import gvsu.cis_350.project.core.Player;
-import gvsu.cis_350.project.core.io.FileIO;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
 
 import org.junit.Test;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.List;
+import gvsu.cis_350.project.core.Player;
+import gvsu.cis_350.project.core.io.FileIO;
 
+/**
+ * A unit test to ensure user data saves and loads correctly.
+ * 
+ * @author Emily
+ *
+ */
 public class FileIOTest {
 	
 	@Test
 	public void test() {
+		//Test user's name
 		String test = "test1234";
 		
-		Player playerOne = new Player(test, 1 ,3);
+		//Creating the first user
+		Player playerOne = new Player(test, 1);
 		try {
+			//Saving the first user
 			FileIO.savePlayerData(playerOne);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Player playerTwo;
+		
+		//Loading the first user's data into a new player object
 		playerTwo = FileIO.loadPlayerData(test);
 		
+		//Asserting that they're equal to eachother
 		assertEquals(playerOne, playerTwo);
 	}
 

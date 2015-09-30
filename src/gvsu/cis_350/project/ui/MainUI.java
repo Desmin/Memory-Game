@@ -3,6 +3,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -20,7 +22,8 @@ import gvsu.cis_350.project.core.game.GameDifficulty;
 import gvsu.cis_350.project.core.game.MemoryGame;
 import gvsu.cis_350.project.utils.Utilities;
 
-public class MainUI extends JFrame implements ActionListener{
+@SuppressWarnings("serial")
+public class MainUI extends JFrame implements ActionListener {
 	
 	private JPanel mainPanel, gridPanel, topPanel, bottomPanel;
 	private List<Card> cards;
@@ -33,7 +36,23 @@ public class MainUI extends JFrame implements ActionListener{
 					  aboutItem,
 					  versionItem;
 	
-	public MainUI(String name){
+	public JLabel getScoreLabel() {
+		return playerScoreLabel;
+	}
+	
+	public MainUI(String name, GameDifficulty difficulty){
+		
+		/*
+		 * A WindowAdapter that ensures the game completely shuts down when
+		 * the UI is closed.
+		 */
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				MemoryGame.getInstance().shutdown(false);
+				super.windowClosing(e);
+			}
+		});
 		
 		//Create three panels
 		mainPanel = new JPanel();
@@ -70,8 +89,13 @@ public class MainUI extends JFrame implements ActionListener{
 		aboutItem.addActionListener(this);
 		versionItem.addActionListener(this);
 		
-		cards = Utilities.fillList(GameDifficulty.EASY);
+		/*
+		 * Fills the list will two of each card type using the given
+		 * difficulty level and randomizes their order.
+		 */
+		cards = Utilities.randomize(Utilities.fillList(difficulty));
 		
+		//Adds the cards onto the frame.
 		cards.forEach((card) -> {
 			gridPanel.add(card);
 		});

@@ -10,14 +10,13 @@ import java.io.Serializable;
  */
 public class Player implements Serializable {
 	
-	public Player(String name, int wins, int losses) {
+	public Player(String name, int wins) {
 		this.name = name;
-		update(wins, losses);
+		update(wins);
 	}
 	
-	public void update(int wins, int losses) {
+	public void update(int wins) {
 		this.wins = wins;
-		this.losses = losses;
 	}
 
 	/**
@@ -27,14 +26,14 @@ public class Player implements Serializable {
 	
 	private String name;
 	
-	private int wins, losses;
+	private int wins;
 
 	public int getWins() {
 		return wins;
 	}
-
-	public int getLosses() {
-		return losses;
+	
+	public void addWin() {
+		wins++;
 	}
 	
 	public String getName() {
@@ -45,7 +44,7 @@ public class Player implements Serializable {
 	public boolean equals(Object obj) {
 		if (obj instanceof Player) {
 			Player player = (Player)obj;
-			return this.wins == player.wins && this.losses == player.losses && this.name == player.name;
+			return this.wins == player.wins && this.name == player.name;
 		}
 		
 		return false;
