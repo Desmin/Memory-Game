@@ -45,7 +45,7 @@ public class MemoryGame implements Game {
 		points = 0;
 		initialize(player.getName(), difficulty);
 	}
-	
+		
 	private Card lastClicked;
 	private boolean clickingEnabled = true;
 	
@@ -59,51 +59,97 @@ public class MemoryGame implements Game {
 		if (Objects.isNull(lastClicked)) {
 			lastClicked = card;
 			return;
-		} else {
-			if (card.equals(lastClicked)) {
-				points++;
-				card.reset();
-				lastClicked.reset();
-				lastClicked = null;
-				gameFrame.getScoreLabel().setText("    Player Score: " + points);
-				gameFrame.revalidate();
-				gameFrame.repaint();
-				if (points == difficulty.getPointsToWin()) {
-					getPlayer().addWin();
-					int response = JOptionPane.showConfirmDialog(gameFrame,
-							"You won! Do you wish to start again?", "Winner!",
-							JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-					boolean restart = false;
-					switch(response) {
-					case JOptionPane.YES_OPTION:
-						restart = true;
-						break;
-					}
-					this.shutdown(restart);
-				}
-			} else {
-				clickingEnabled = false;
-				new SwingWorker<Void, Void>() {
+		} else
+			clickingEnabled = false;
+		
+		boolean match = card.equals(lastClicked);
+		new SwingWorker<Void, Void>() {
 
-					@Override
-					protected Void doInBackground() throws Exception {
-						Thread.sleep(1000);
-						return null;
-					}
-					
-					@Override
-					protected void done() {
-						card.setHasBeenClicked(false);
-						lastClicked.setHasBeenClicked(false);
-						card.reset();
-						lastClicked.reset();
-						lastClicked = null;
-						clickingEnabled = true;
-					}
-					
-				}.execute();
+			@Override
+			protected Void doInBackground() throws Exception {
+				if (match) {
+					points++;
+					gameFrame.getScoreLabel().setText("    Player Score: " + points);
+				}
+				Thread.sleep(match ? 500 : 1000);
+				return null;
 			}
-		}
+			
+			@Override
+			protected void done() {
+				if (match) {
+					card.reset();
+					lastClicked.reset();
+					gameFrame.revalidate();
+					gameFrame.repaint();
+					lastClicked = null;
+					if (points == difficulty.getPointsToWin()) {
+						getPlayer().addWin();
+						int response = JOptionPane.showConfirmDialog(gameFrame,
+								"You won! Do you wish to start again?", "Winner!",
+								JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+						boolean restart = false;
+						switch(response) {
+						case JOptionPane.YES_OPTION:
+							restart = true;
+							break;
+						}
+						shutdown(restart);
+					}
+				} else {
+					card.setHasBeenClicked(false);
+					lastClicked.setHasBeenClicked(false);
+					card.reset();
+					lastClicked.reset();
+					lastClicked = null;
+				}
+				clickingEnabled = true;
+			}
+			
+		}.execute();
+		/*if (card.equals(lastClicked)) {
+			points++;
+			card.reset();
+			lastClicked.reset();
+			lastClicked = null;
+			gameFrame.getScoreLabel().setText("    Player Score: " + points);
+			gameFrame.revalidate();
+			gameFrame.repaint();
+			if (points == difficulty.getPointsToWin()) {
+				getPlayer().addWin();
+				int response = JOptionPane.showConfirmDialog(gameFrame,
+						"You won! Do you wish to start again?", "Winner!",
+						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+				boolean restart = false;
+				switch(response) {
+				case JOptionPane.YES_OPTION:
+					restart = true;
+					break;
+				}
+				this.shutdown(restart);
+			}
+		} else {
+			clickingEnabled = false;
+			new SwingWorker<Void, Void>() {
+
+				@Override
+				protected Void doInBackground() throws Exception {
+					Thread.sleep(1000);
+					return null;
+				}
+				
+				@Override
+				protected void done() {
+					card.setHasBeenClicked(false);
+					lastClicked.setHasBeenClicked(false);
+					card.reset();
+					lastClicked.reset();
+					lastClicked = null;
+					clickingEnabled = true;
+				}
+				
+			}.execute();
+		}*/
 	}
 
 	@Override
