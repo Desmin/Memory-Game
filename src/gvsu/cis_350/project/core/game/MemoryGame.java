@@ -176,6 +176,15 @@ public class MemoryGame implements Game {
 	public Player getPlayer() {
 		return player;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof MemoryGame){
+			MemoryGame game = (MemoryGame)obj;
+			return this.difficulty == game.difficulty;
+		}
+		return false;
+	}
 
 
 }
