@@ -13,17 +13,54 @@ import gvsu.cis_350.project.core.Player;
 import gvsu.cis_350.project.core.io.FileIO;
 import gvsu.cis_350.project.ui.MainUI;
 
+/**
+ * A single player memory game.
+ * 
+ * @author Desmin Little
+ *
+ */
 public class MemoryGame implements Game {
 	
+	/**
+	 * The logger for this class.
+	 */
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
-	private int points = 0;
+	/**
+	 * The number of matches the player has found.
+	 */
+	private int matches = 0;
 	
+	/**
+	 * The main user interface.
+	 */
 	private MainUI gameFrame;
+	
+	/**
+	 * The player associated with this game.
+	 */
 	private Player player;
+	
+	/**
+	 * The difficulty of this game.
+	 */
 	private GameDifficulty difficulty;
 	
+	/**
+	 * A singleton instance of this game, so that we
+	 * can access its methods in the UI class.
+	 */
 	private static MemoryGame instance;
+	
+	/**
+	 * Remembers which card was last clicked in the game.
+	 */
+	private Card lastClicked;
+	
+	/**
+	 * Tells us whether or not clicking is enabled on the interface.
+	 */
+	private boolean clickingEnabled = true;
 	
 	public static MemoryGame getInstance() {
 		return instance;
@@ -42,37 +79,32 @@ public class MemoryGame implements Game {
 	@Override
 	public void reset() {
 		log.log(Level.INFO, "Resetting game...");
-		points = 0;
+		matches = 0;
 		initialize(player.getName(), difficulty);
 	}
-		
-	private Card lastClicked;
-	private boolean clickingEnabled = true;
 	
 	@Override
 	public void onCardClick(Card card) {
-		if (card.hasBeenClicked() || !clickingEnabled)
+		if (card.hasBeenClicked() || !clickingEnabled) //If the card has already been clicked we return.
 			return;
-		System.out.println("Clicked: " + card.getCardType().name());
-		System.out.println("Last clicked " + ((Objects.isNull(lastClicked)) ? "nothing" : lastClicked.getCardType().name()));
-		card.flip();
-		if (Objects.isNull(lastClicked)) {
-			lastClicked = card;
+		card.flip(); //Changes the state of the card.
+		if (Objects.isNull(lastClicked)) { //If this is the first card to be flipped over we set it as the
+			lastClicked = card;			   //last card to clicked.
 			return;
 		} else
-			clickingEnabled = false;
+			clickingEnabled = false; //Otherwise we disable clicking as we'll be checking for a match.
 		
-		boolean match = card.equals(lastClicked);
-		new SwingWorker<Void, Void>() {
+		boolean match = card.equals(lastClicked); //Do we have a match?
+		new SwingWorker<Void, Void>() { //SwingWroker to delay the flipping/resetting of the clicked cards.
 
 			@Override
 			protected Void doInBackground() throws Exception {
-				if (match) {
-					points++;
-					gameFrame.getScoreLabel().setText("    Player Score: " + points);
+				if (match) { //If it's a match we update how many matches we've got and display that.
+					matches++;
+					gameFrame.getScoreLabel().setText("    Player Score: " + matches);
 				}
-				Thread.sleep(match ? 500 : 1000);
-				return null;
+				Thread.sleep(match ? 500 : 1000); //Wait 500-1000ms to do anything else so players can
+				return null;					  //see which cards they clicked.
 			}
 			
 			@Override
@@ -83,7 +115,7 @@ public class MemoryGame implements Game {
 					gameFrame.revalidate();
 					gameFrame.repaint();
 					lastClicked = null;
-					if (points == difficulty.getPointsToWin()) {
+					if (matches == difficulty.getMatchesNeededToWin()) {
 						getPlayer().addWin();
 						int response = JOptionPane.showConfirmDialog(gameFrame,
 								"You won! Do you wish to start again?", "Winner!",
@@ -107,49 +139,6 @@ public class MemoryGame implements Game {
 			}
 			
 		}.execute();
-		/*if (card.equals(lastClicked)) {
-			points++;
-			card.reset();
-			lastClicked.reset();
-			lastClicked = null;
-			gameFrame.getScoreLabel().setText("    Player Score: " + points);
-			gameFrame.revalidate();
-			gameFrame.repaint();
-			if (points == difficulty.getPointsToWin()) {
-				getPlayer().addWin();
-				int response = JOptionPane.showConfirmDialog(gameFrame,
-						"You won! Do you wish to start again?", "Winner!",
-						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-				boolean restart = false;
-				switch(response) {
-				case JOptionPane.YES_OPTION:
-					restart = true;
-					break;
-				}
-				this.shutdown(restart);
-			}
-		} else {
-			clickingEnabled = false;
-			new SwingWorker<Void, Void>() {
-
-				@Override
-				protected Void doInBackground() throws Exception {
-					Thread.sleep(1000);
-					return null;
-				}
-				
-				@Override
-				protected void done() {
-					card.setHasBeenClicked(false);
-					lastClicked.setHasBeenClicked(false);
-					card.reset();
-					lastClicked.reset();
-					lastClicked = null;
-					clickingEnabled = true;
-				}
-				
-			}.execute();
-		}*/
 	}
 
 	@Override
@@ -169,7 +158,7 @@ public class MemoryGame implements Game {
 	}
 	
 	public int getPoints() {
-		return points;
+		return matches;
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class Card extends JLabel implements MouseListener {
 	/**
 	 * Default Card constructor. Builds a card with the given
 	 * CardType.
-	 * @param type
+	 * @param type The CardType of this card.
 	 */
 	public Card(CardType type) {
 		super("", SwingConstants.CENTER);
@@ -33,10 +33,13 @@ public class Card extends JLabel implements MouseListener {
 		this.addMouseListener(this);
 	}
 	
+	/**
+	 * The file path to the game's resources.
+	 */
 	private static final String IMG_PATH = "resources/";
 	
 	/**
-	 * Static and final because all cards will share the same back image.
+	 * Static and final because all cards will share the same back and blank image.
 	 */
 	public static final ImageIcon BACK = new ImageIcon(IMG_PATH + "questionImg.png");
 	public static final ImageIcon BLANK = new ImageIcon(IMG_PATH + "blankImg.png");
@@ -46,12 +49,21 @@ public class Card extends JLabel implements MouseListener {
 	 */
 	private CardType cardType;
 	
+	/**
+	 * Tells us whether or not this card has been clicked.
+	 */
 	private boolean clicked = false;
 	
+	/**
+	 * Tells us whether or not this card has been clicked.
+	 */
 	public boolean hasBeenClicked() {
 		return clicked;
 	}
 	
+	/**
+	 * Sets whether or not this card has been clicked.
+	 */
 	public void setHasBeenClicked(boolean flag) {
 		this.clicked = flag;
 	}
@@ -104,12 +116,21 @@ public class Card extends JLabel implements MouseListener {
 		}
 	}
 	
+	/**
+	 * 'Flips' this card over on the interface, changing
+	 * the icon and setting the card to clicked.
+	 */
 	public void flip() {
 		this.setBackground(Color.cyan);
 		this.setIcon(getCardType().getFace());
 		this.setHasBeenClicked(true);
 	}
 	
+	/**
+	 * If the card has already been clicked this will remove
+	 * the card from the board, otherwise it will reset the
+	 * card to its previous state.
+	 */
 	public void reset() {
 		this.setBackground(Color.white);
 		if (this.hasBeenClicked()) {
@@ -119,6 +140,10 @@ public class Card extends JLabel implements MouseListener {
 		this.setIcon(BACK);
 	}
 
+	/**
+	 * The click event handling what happens when a
+	 * card is clicked on the interface.
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		MemoryGame.getInstance().onCardClick((Card)e.getSource());
@@ -138,7 +163,6 @@ public class Card extends JLabel implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {}
-	
 	
 	@Override
 	public boolean equals(Object obj) {

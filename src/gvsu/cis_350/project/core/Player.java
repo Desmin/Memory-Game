@@ -10,12 +10,22 @@ import java.io.Serializable;
  */
 public class Player implements Serializable {
 	
+	/**
+	 * The default constructor defining a player given
+	 * the player's name and wins.
+	 * @param name The player's name.
+	 * @param wins How many wins this player has.
+	 */
 	public Player(String name, int wins) {
 		this.name = name;
-		update(wins);
+		setWins(wins);
 	}
 	
-	public void update(int wins) {
+	/**
+	 * Sets this players wins to the given amount.
+	 * @param wins
+	 */
+	public void setWins(int wins) {
 		this.wins = wins;
 	}
 
@@ -24,14 +34,23 @@ public class Player implements Serializable {
 	 */
 	private static final long serialVersionUID = 9199972866695457612L;
 	
+	/**
+	 * The name of this player.
+	 */
 	private String name;
 	
+	/**
+	 * The number of wins associated with this player.
+	 */
 	private int wins;
 
 	public int getWins() {
 		return wins;
 	}
 	
+	/**
+	 * Adds a single win to this player.
+	 */
 	public void addWin() {
 		wins++;
 	}
