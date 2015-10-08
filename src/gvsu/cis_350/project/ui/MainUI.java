@@ -17,6 +17,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.game.Game;
@@ -119,19 +120,6 @@ public class MainUI extends JFrame implements ActionListener {
 	 */
 	public MainUI(String name, GameDifficulty difficulty){
 		
-		/**
-		 * A WindowAdapter that ensures the game completely shuts down when
-		 * the UI is closed.
-		 * @param WindowAdapter
-		 */
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				MemoryGame.getInstance().shutdown(false);
-				super.windowClosing(e);
-			}
-		});
-		
 		//Create main underlying panel
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -205,6 +193,7 @@ public class MainUI extends JFrame implements ActionListener {
 		mainPanel.add(bottomPanel);
 		
 		//Sets title, adds main panel, sets size, etc.
+		this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
 		this.setTitle("Concentration");
 		this.getContentPane().add(mainPanel);
 		this.setVisible(true);
@@ -227,7 +216,8 @@ public class MainUI extends JFrame implements ActionListener {
 		}
 		//Quits game and quit program if quit is selected
 		if(e.getSource() == quitItem){
-			game.shutdown(false);
+			if(quitGame())
+				game.shutdown(false);
 		}
 		//Shows info about game rules
 		if(e.getSource() == aboutItem){
@@ -239,4 +229,20 @@ public class MainUI extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(this, VERSION_INFO, "VERSION",1);
 		}
 	}
+	/**
+	 * Asks user if they really want to exit the game.
+	 * @return true or false
+	 */
+	private boolean quitGame(){
+		//Yes/No dialog asking user if they want to quit
+		int quit = JOptionPane.showConfirmDialog(null, 
+		"Are you sure you wish to quit?", "Quit Game?",JOptionPane.YES_NO_OPTION);
+		if(quit == JOptionPane.YES_OPTION){
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	
 }
