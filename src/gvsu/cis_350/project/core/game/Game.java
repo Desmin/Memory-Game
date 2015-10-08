@@ -21,12 +21,12 @@ public interface Game {
 	/**
 	 * Resets the current game and starts a new one.
 	 */
-	public void reset();
-	
+	public void reset();	
+
 	/**
-	 * Updates the user interface and other important variables when certain events
-	 * take place in the game.
-	 * 
+	 * Handles state and interface changes when a user clicks
+	 * on a card.
+	 * @param card
 	 */
 	public void onCardClick(Card card);
 	

@@ -1,13 +1,18 @@
 package gvsu.cis_350.project.testing;
-import junit.framework.Assert;
-import gvsu.cis_350.project.core.game.*;
-import static org.junit.Assert.*;
-import gvsu.cis_350.project.core.game.GameDifficulty;
-import gvsu.cis_350.project.core.Card;
-import gvsu.cis_350.project.core.Player;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
+import gvsu.cis_350.project.core.game.GameDifficulty;
+import gvsu.cis_350.project.core.game.MemoryGame;
+
+/**
+ * A class to test game difficulty settings.
+ * 
+ * @author Emily
+ *
+ */
 public class GameDifficultyTest {
 
 	@Test

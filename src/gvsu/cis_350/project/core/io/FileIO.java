@@ -48,7 +48,7 @@ public class FileIO {
 	
 	/**
 	 * Loads player data using the given name.
-	 * @param name The username of the player we wish to load.
+	 * @param name The name of the player we wish to load.
 	 * @return The Player with previously saved data, or if previous data
 	 * doesn't exist a new Player.
 	 */
@@ -60,7 +60,7 @@ public class FileIO {
 			file = new FileInputStream(SAVE_PATH + name + ".mgd");
 			if (Objects.nonNull(file)) {
 				DataInputStream in = new DataInputStream(file);
-				newPlayer.update(in.readInt());
+				newPlayer.setWins(in.readInt());
 				in.close();
 				logger.log(Level.INFO, "User " + name + " found!");
 			}

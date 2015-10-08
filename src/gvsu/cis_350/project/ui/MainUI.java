@@ -23,7 +23,7 @@ import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.game.Game;
 import gvsu.cis_350.project.core.game.GameDifficulty;
 import gvsu.cis_350.project.core.game.MemoryGame;
-import gvsu.cis_350.project.utils.Utilities;
+import gvsu.cis_350.project.utils.Util;
 
 @SuppressWarnings("serial")
 
@@ -161,7 +161,7 @@ public class MainUI extends JFrame implements ActionListener {
 		
 		//Fills the list will two of each card type using the given
 		//difficulty level and randomizes their order.
-		 cards = Utilities.randomize(Utilities.fillList(difficulty));
+		 cards = Util.randomize(Util.fillList(difficulty));
 		
 		//Adds the cards onto the frame
 		cards.forEach((card) -> {
