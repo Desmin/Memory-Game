@@ -7,6 +7,7 @@ package gvsu.cis_350.project.core.game;
  *
  */
 public enum GameDifficulty {
+	UNSET(0),
 	EASY(16),
 	AVERAGE(32),
 	HARD(64);

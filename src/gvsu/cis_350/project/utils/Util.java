@@ -1,7 +1,7 @@
 package gvsu.cis_350.project.utils;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,12 +25,8 @@ public final class Util {
 	 * @return A {@link List} with a randomized order of cards.
 	 */
 	public static List<Card> randomize(List<Card> cards) {
-		List<Card> randomizedCards = new LinkedList<>();
-		SecureRandom random = new SecureRandom();
-		while (!cards.isEmpty()) {
-			randomizedCards.add(cards.remove(random.nextInt(cards.size())));
-		}
-		return randomizedCards;
+		Collections.shuffle(cards, new SecureRandom());
+		return cards;
 	}
 	
 	/**
@@ -40,16 +36,16 @@ public final class Util {
 	 * @return An ArrayList<Card> holding the required amount of cards for the
 	 * given difficulty.
 	 */
-	public static ArrayList<Card> fillList(GameDifficulty difficulty) {
+	public static List<Card> fillList(GameDifficulty difficulty) {
 		int limit = difficulty.getNumberOfCards();
-		ArrayList<Card> list = new ArrayList<>();
+		List<Card> map = new LinkedList<>();
 		for (CardType type : CardType.values()) {
 			if ((type.ordinal()+1) <= limit) {
-				list.add(new Card(type));
-				list.add(new Card(type));
+				map.add(new Card(type));
+				map.add(new Card(type));
 			}
 		}		
-		return list;
+		return map;
 	}
 
 }

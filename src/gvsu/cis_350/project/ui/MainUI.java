@@ -2,11 +2,11 @@ package gvsu.cis_350.project.ui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -14,15 +14,15 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import gvsu.cis_350.project.core.Card;
-import gvsu.cis_350.project.core.game.Game;
+import gvsu.cis_350.project.core.GameSession;
 import gvsu.cis_350.project.core.game.GameDifficulty;
-import gvsu.cis_350.project.core.game.MemoryGame;
+import gvsu.cis_350.project.core.game.SinglePlayerGameSession;
+import gvsu.cis_350.project.core.game.event.ObservableActionListener;
 import gvsu.cis_350.project.utils.Util;
 
 @SuppressWarnings("serial")
@@ -36,7 +36,7 @@ import gvsu.cis_350.project.utils.Util;
  * @author Nick Spruit
  * @version 10/7/2015
  */
-public class MainUI extends JFrame implements ActionListener {
+public class MainUI extends JFrame implements Observer {
 	
 	/** Main panel that holds top, middle, and bottom panels */
 	private JPanel mainPanel;
@@ -49,9 +49,6 @@ public class MainUI extends JFrame implements ActionListener {
 	
 	/** Middle panel holds the cards in a grid */
 	private JPanel gridPanel;
-	
-	/** List of cards that get added to panel */
-	private List<Card> cards;
 	
 	/** Label for player name */
 	private JLabel playerNameLabel;
@@ -85,24 +82,6 @@ public class MainUI extends JFrame implements ActionListener {
 	
 	/** Version item - for info about version */
 	private JMenuItem versionItem;
-	
-	/** Game rules - how to play */
-	private final String ABOUT_GAME = "How to Play...\n\n" +
-									 "1.) Click a card with a '?' picture.\n" +
-									 "	   The card will turn over and reveal a picture.\n" +
-									 "2.) Click another card that you think is a match.\n" +
-									 "    The card will turn over and reveal another\n" +
-									 "    picture that is the same or different.\n" +
-									 "3.) If the cards are a match, you gain a point and\n" +
-									 "    the cards will disappear.\n" +
-									 "4.) Continue trying to match all the pairs of cards\n" +
-									 "    until they are all gone.\n" +
-									 "5.) You win the game when all 8 pairs are matched.";
-	
-	/** Game version - version, date, and authors */
-	private final String VERSION_INFO = "Version: 1.0\n" +
-										"Date: 10/12/15\n" +
-										"Authors: Desmin Little, Emily Theis, Nick Spruit";
 					
 	/**
 	 * Returns the player score label
@@ -119,6 +98,10 @@ public class MainUI extends JFrame implements ActionListener {
 	 * menu items
 	 */
 	public MainUI(String name, GameDifficulty difficulty){
+		
+		SinglePlayerGameSession session = new SinglePlayerGameSession();
+		session.initialize(name, difficulty);
+		session.addObserver(this);
 		
 		//Create main underlying panel
 		mainPanel = new JPanel();
@@ -152,22 +135,31 @@ public class MainUI extends JFrame implements ActionListener {
 		aboutMenu.add(aboutItem);
 		aboutMenu.add(versionItem);
 		
-		//Adds action listeners to each menu item
-		newGameItem.addActionListener(this);
-		quitItem.addActionListener(this);
-		aboutItem.addActionListener(this);
-		versionItem.addActionListener(this);
+		newGameItem.setName("new_game");
+		quitItem.setName("quit_game");
+		aboutItem.setName("about");
+		versionItem.setName("version");
 		
+		ObservableActionListener listener = new ObservableActionListener(session);
+		//Adds action listeners to each menu item
+		newGameItem.addActionListener(listener);
+		quitItem.addActionListener(listener);
+		aboutItem.addActionListener(listener);
+		versionItem.addActionListener(listener);	
 		
 		//Fills the list will two of each card type using the given
 		//difficulty level and randomizes their order.
-		 cards = Util.randomize(Util.fillList(difficulty));
+		 Map<GameJLabel, Card> map = new HashMap<>();
+		 List<Card> list = Util.randomize(Util.fillList(difficulty));
 		
 		//Adds the cards onto the frame
-		cards.forEach((card) -> {
-			gridPanel.add(card);
+		list.forEach((card) -> {
+			GameJLabel label = new GameJLabel(session);
+			gridPanel.add(label);
+			map.put(label, card);
 		});
 		
+		session.setCardMap(map);
 		//Sets up a font
 		Font f = new Font("Courier", Font.BOLD, 20);
 		
@@ -193,7 +185,7 @@ public class MainUI extends JFrame implements ActionListener {
 		mainPanel.add(bottomPanel);
 		
 		//Sets title, adds main panel, sets size, etc.
-		this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setTitle("Concentration");
 		this.getContentPane().add(mainPanel);
 		this.setVisible(true);
@@ -201,47 +193,26 @@ public class MainUI extends JFrame implements ActionListener {
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 	}
-	
-	/**
-	 * Determines what to do when one of the menu items 
-	 * is clicked. 
-	 * @param e - The action event
-	 */
+
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		Game game = MemoryGame.getInstance();
-		//Shutdown game and start over if new game is selected
-		if(e.getSource() == newGameItem){
-			game.shutdown(true);
+	public void update(Observable ob, Object o) {
+		GameSession session = (GameSession)ob;
+		String action = session.getUIAction();
+		switch(action) {
+		case "dispose":
+			this.dispose();
+			return;
+		case "update_score":
+			getScoreLabel().setText("    Player Score: " + session.getSessionMatches());
+			return;
+		case "repaint":
+			revalidate();
+			repaint();
+			return;
+		default:
+			return;
 		}
-		//Quits game and quit program if quit is selected
-		if(e.getSource() == quitItem){
-			if(quitGame())
-				game.shutdown(false);
-		}
-		//Shows info about game rules
-		if(e.getSource() == aboutItem){
-			JOptionPane.showMessageDialog(this, ABOUT_GAME,"HOW TO PLAY CONCENTRATION",1);
-			
-		}
-		//Shows info about version of game
-		if(e.getSource() == versionItem){
-			JOptionPane.showMessageDialog(this, VERSION_INFO, "VERSION",1);
-		}
-	}
-	/**
-	 * Asks user if they really want to exit the game.
-	 * @return true or false
-	 */
-	private boolean quitGame(){
-		//Yes/No dialog asking user if they want to quit
-		int quit = JOptionPane.showConfirmDialog(null, 
-		"Are you sure you wish to quit?", "Quit Game?",JOptionPane.YES_NO_OPTION);
-		if(quit == JOptionPane.YES_OPTION){
-			return true;
-		}
-		else
-			return false;
+		
 	}
 	
 	
