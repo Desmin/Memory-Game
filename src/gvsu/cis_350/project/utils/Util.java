@@ -24,7 +24,7 @@ public final class Util {
 	 * @param cards A {@link LinkedList} of cards to be randomized.
 	 * @return A {@link List} with a randomized order of cards.
 	 */
-	public static List<Card> randomize(List<Card> cards) {
+	private static List<Card> randomize(List<Card> cards) {
 		Collections.shuffle(cards, new SecureRandom());
 		return cards;
 	}
@@ -36,16 +36,20 @@ public final class Util {
 	 * @return An ArrayList<Card> holding the required amount of cards for the
 	 * given difficulty.
 	 */
-	public static List<Card> fillList(GameDifficulty difficulty) {
+	public static List<Card> fetchRandomizedList(GameDifficulty difficulty) {
 		int limit = difficulty.getNumberOfCards();
-		List<Card> map = new LinkedList<>();
+		List<Card> list = new LinkedList<>();
 		for (CardType type : CardType.values()) {
 			if ((type.ordinal()+1) <= limit) {
-				map.add(new Card(type));
-				map.add(new Card(type));
+				list.add(new Card(type));
+				list.add(new Card(type));
 			}
 		}		
-		return map;
+		return randomize(list);
+	}
+	
+	public static String firstToUpper(String string) {
+		return Character.toUpperCase(string.charAt(0)) + string.substring(1).toLowerCase();
 	}
 
 }

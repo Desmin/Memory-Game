@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Desmin Little
  *
  */
-public class Player implements Serializable {
+public final class Player implements Serializable {
 	
 	/**
 	 * The default constructor defining a player given

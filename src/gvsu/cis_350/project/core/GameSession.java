@@ -5,46 +5,20 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JLabel;
+
 import gvsu.cis_350.project.core.game.GameDifficulty;
-import gvsu.cis_350.project.ui.GameJLabel;
 
 public abstract class GameSession extends Observable implements Observer {
 	
-	private Player sessionPlayer;
-	private int sessionMatches = 0;
-	private GameDifficulty sessionDifficulty = GameDifficulty.UNSET;
-	private boolean clickingEnabled = true;
-	private Card lastCardClicked;
 	private String uiAction;
-	private Map<GameJLabel, Card> cardMap = new HashMap<>();
 	
-	/**
-	 * @return the cardMap
-	 */
-	public Map<GameJLabel, Card> getCardMap() {
-		return cardMap;
-	}
-
-	/**
-	 * @param cardMap the cardMap to set
-	 */
-	public void setCardMap(Map<GameJLabel, Card> cardMap) {
-		this.cardMap = cardMap;
-	}
-
-	/**
-	 * @param sessionPlayer the sessionPlayer to set
-	 */
-	public void setSessionPlayer(Player sessionPlayer) {
-		this.sessionPlayer = sessionPlayer;
-	}
-
-	/**
-	 * @param sessionDifficulty the sessionDifficulty to set
-	 */
-	public void setSessionDifficulty(GameDifficulty sessionDifficulty) {
-		this.sessionDifficulty = sessionDifficulty;
-	}
+	protected Player sessionPlayer;
+	protected int sessionMatches = 0;
+	protected GameDifficulty sessionDifficulty = GameDifficulty.UNSET;
+	protected boolean clickingEnabled = true;
+	protected Card lastCardClicked;
+	protected Map<JLabel, Card> cardMap = new HashMap<>();
 
 	public String getUIAction() {
 		return uiAction;
@@ -55,59 +29,11 @@ public abstract class GameSession extends Observable implements Observer {
 		this.setChanged();
 		this.notifyObservers();
 	}
-
-	/**
-	 * @param sessionMatches the sessionMatches to set
-	 */
-	public void setSessionMatches(int sessionMatches) {
-		this.sessionMatches = sessionMatches;
+	
+	public void setCardMap(Map<JLabel, Card> cardMap) {
+		this.cardMap = cardMap;
 	}
-
-	/**
-	 * @return the clickingEnabled
-	 */
-	public boolean isClickingEnabled() {
-		return clickingEnabled;
-	}
-
-	/**
-	 * @param clickingEnabled the clickingEnabled to set
-	 */
-	public void setClickingEnabled(boolean clickingEnabled) {
-		this.clickingEnabled = clickingEnabled;
-	}
-
-	/**
-	 * @return the lastCardClicked
-	 */
-	public Card getLastCardClicked() {
-		return lastCardClicked;
-	}
-
-	/**
-	 * @param lastCardClicked the lastCardClicked to set
-	 */
-	public void setLastCardClicked(Card lastCardClicked) {
-		this.lastCardClicked = lastCardClicked;
-	}
-
-	/**
-	 * @return the sessionDifficulty
-	 */
-	public GameDifficulty getSessionDifficulty() {
-		return sessionDifficulty;
-	}
-
-	/**
-	 * @return the sessionPlayer
-	 */
-	public Player getSessionPlayer() {
-		return sessionPlayer;
-	}
-
-	/**
-	 * @return the sessionMatches
-	 */
+	
 	public int getSessionMatches() {
 		return sessionMatches;
 	}

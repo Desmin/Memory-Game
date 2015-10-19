@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Observable;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
@@ -13,30 +14,29 @@ import gvsu.cis_350.project.core.GameSession;
 import gvsu.cis_350.project.core.game.event.ObservableActionListener;
 import gvsu.cis_350.project.core.game.event.ObservableMouseListener;
 import gvsu.cis_350.project.core.io.FileIO;
-import gvsu.cis_350.project.ui.GameJLabel;
-import gvsu.cis_350.project.ui.MainUI;
+import gvsu.cis_350.project.ui.GameFrame;
 
 public class SinglePlayerGameSession extends GameSession {
 
 	@Override
 	public boolean initialize(String sessionPlayerName, GameDifficulty sessionDifficulty) {
-		this.setSessionDifficulty(sessionDifficulty);
-		this.setSessionPlayer(FileIO.loadPlayerData(sessionPlayerName));
+		this.sessionDifficulty = sessionDifficulty;
+		this.sessionPlayer = FileIO.loadPlayerData(sessionPlayerName);
 		return true;
 	}
 
 	@Override
 	public boolean reset() {
-		setSessionMatches(0);
+		sessionMatches = 0;
 		this.setUIAction("dispose");
-		new MainUI(this.getSessionPlayer().getName(), this.getSessionDifficulty());
+		new GameFrame(sessionPlayer.getName(), sessionDifficulty);
 		return true;
 	}
 
 	@Override
 	public void quit(boolean restart) {
 		try {
-			FileIO.savePlayerData(getSessionPlayer());
+			FileIO.savePlayerData(sessionPlayer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -53,25 +53,25 @@ public class SinglePlayerGameSession extends GameSession {
 			quit(((ObservableActionListener)ob).getFlag());
 			return;
 		} else if (ob instanceof ObservableMouseListener) {
-			GameJLabel label = ((ObservableMouseListener)ob).getLabelClicked();
+			JLabel label = ((ObservableMouseListener)ob).getLabelClicked();
 			onCardClick(label);
 		}
 		
 	}
 	
-	public void onCardClick(GameJLabel label) {
-		Card card = getCardMap().get(label);
-		if (card.hasBeenClicked() || !isClickingEnabled()) //If the card has already been clicked we return.
+	public void onCardClick(JLabel label) {
+		Card card = cardMap.get(label);
+		if (card.hasBeenClicked() || !clickingEnabled) //If the card has already been clicked we return.
 			return;
 		label.setIcon(card.getCardType().getFace());//Changes the state of the card.
 		card.setHasBeenClicked(true);
-		if (Objects.isNull(getLastCardClicked())) { //If this is the first card to be flipped over we set it as the
-			setLastCardClicked(card);			   //last card to clicked.
+		if (Objects.isNull(lastCardClicked)) { //If this is the first card to be flipped over we set it as the
+			lastCardClicked = card;			   //last card to clicked.
 			return;
 		} else
-			setClickingEnabled(false);; //Otherwise we disable clicking as we'll be checking for a match.
+			clickingEnabled = false; //Otherwise we disable clicking as we'll be checking for a match.
 		
-		boolean match = card.equals(getLastCardClicked()); //Do we have a match?
+		boolean match = card.equals(lastCardClicked); //Do we have a match?
 		new SwingWorker<Void, Void>() { //SwingWroker to delay the flipping/resetting of the clicked cards.
 
 			@Override
@@ -93,8 +93,8 @@ public class SinglePlayerGameSession extends GameSession {
 						label.setIcon(Card.BACK);
 					resetLastCardClicked();
 					setUIAction("repaint");
-					if (getSessionMatches() == getSessionDifficulty().getMatchesNeededToWin()) {
-						getSessionPlayer().addWin();
+					if (sessionMatches == sessionDifficulty.getMatchesNeededToWin()) {
+						 sessionPlayer.addWin();
 						int response = JOptionPane.showConfirmDialog(label.getParent(),
 								"You won! Do you wish to start again?", "Winner!",
 								JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -108,24 +108,24 @@ public class SinglePlayerGameSession extends GameSession {
 					}
 				} else {
 					card.setHasBeenClicked(false);
-					getLastCardClicked().setHasBeenClicked(false);
+					lastCardClicked.setHasBeenClicked(false);
 					if (card.hasBeenClicked())
 						label.setIcon(Card.BLANK);
 					else
 						label.setIcon(Card.BACK);
 					resetLastCardClicked();
-					setLastCardClicked(null);
+					lastCardClicked = null;
 				}
-				setClickingEnabled(true);
+				clickingEnabled = true;
 			}
 			
 		}.execute();
 	}
 	
 	private void resetLastCardClicked() {
-		for (Entry<GameJLabel, Card> e : getCardMap().entrySet()) {
-			if (e.getValue() == getLastCardClicked()) {
-				GameJLabel label = e.getKey();
+		for (Entry<JLabel, Card> e : cardMap.entrySet()) {
+			if (e.getValue() == lastCardClicked) {
+				JLabel label = e.getKey();
 				if (e.getValue().hasBeenClicked())
 					label.setIcon(Card.BLANK);
 				else
@@ -133,7 +133,7 @@ public class SinglePlayerGameSession extends GameSession {
 				break;
 			}
 		}
-		setLastCardClicked(null);
+		lastCardClicked = null;
 	}
 
 }

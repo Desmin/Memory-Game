@@ -2,6 +2,7 @@ package gvsu.cis_350.project.ui;
 import javax.swing.JOptionPane;
 
 import gvsu.cis_350.project.core.game.GameDifficulty;
+import gvsu.cis_350.project.utils.Util;
 /**
  * This class represents a dialog that starts the 
  * game. It asks for the user's name and then creates a 
@@ -32,7 +33,7 @@ public class DialogUI {
 			userName = JOptionPane.showInputDialog(message);
 		
 		//Starts a new game
-		new MainUI(userName.toUpperCase(), GameDifficulty.EASY);
+		new GameFrame(Util.firstToUpper(userName), GameDifficulty.EASY);
 	}	
 	/**
 	 * Main method starts up the dialog

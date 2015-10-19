@@ -4,27 +4,28 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Observable;
 
-import gvsu.cis_350.project.core.GameSession;
-import gvsu.cis_350.project.ui.GameJLabel;
+import javax.swing.JLabel;
 
-public class ObservableMouseListener extends Observable implements MouseListener {
+import gvsu.cis_350.project.core.GameSession;
+
+public final class ObservableMouseListener extends Observable implements MouseListener {
 
 	public ObservableMouseListener(GameSession observer) {
 		this.addObserver(observer);
 	}
 	
-	private GameJLabel labelClicked;
+	private JLabel labelClicked;
 	
 	/**
 	 * @return the labelClicked
 	 */
-	public GameJLabel getLabelClicked() {
+	public JLabel getLabelClicked() {
 		return labelClicked;
 	}
 	/**
 	 * @param labelClicked the labelClicked to set
 	 */
-	public void setLabelClicked(GameJLabel labelClicked) {
+	public void setLabelClicked(JLabel labelClicked) {
 		this.labelClicked = labelClicked;
 		this.setChanged();
 		this.notifyObservers();
@@ -34,7 +35,7 @@ public class ObservableMouseListener extends Observable implements MouseListener
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		setLabelClicked((GameJLabel) e.getSource());
+		setLabelClicked((JLabel) e.getSource());
 
 	}
 	@Override

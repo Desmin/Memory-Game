@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 import gvsu.cis_350.project.core.GameSession;
 
-public class ObservableActionListener extends Observable implements ActionListener {
+public final class ObservableActionListener extends Observable implements ActionListener {
 	
 	public ObservableActionListener(GameSession session) {
 		addObserver(session);

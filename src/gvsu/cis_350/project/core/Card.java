@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
  *
  */
 
-public class Card{
+public final class Card {
 	
 	/**
 	 * Default Card constructor. Builds a card with the given
