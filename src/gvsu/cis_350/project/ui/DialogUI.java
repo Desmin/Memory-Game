@@ -1,5 +1,13 @@
 package gvsu.cis_350.project.ui;
-import javax.swing.JOptionPane;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
 
 import gvsu.cis_350.project.core.game.GameDifficulty;
 import gvsu.cis_350.project.utils.Util;
@@ -11,35 +19,83 @@ import gvsu.cis_350.project.utils.Util;
  * @author Nick Spruit
  * @version 10/7/2015
  */
-public class DialogUI {
 
-	/** Keeps track of user name */
-	private String userName;
+public class DialogUI extends JFrame {
 	
-	/**
-	 * Constructor displays dialog box and initializes a game
-	 * set with an easy difficulty
-	 */
-	public DialogUI(){	
-		//Empty string
-		String empty = new String();
+	private JComboBox difficultyLevel;
+	private JButton startButton;
+	private JTextField nameInput;
+	
+	public DialogUI(){
+		this.setTitle("Setup Memory Game");
+		this.setBackground(Color.WHITE);
+		difficultyLevel = new JComboBox(GameDifficulty.values());
+		difficultyLevel.setBackground(Color.WHITE);
 		
-		//Player name and message for player
-		userName = "";
-		String message = "Welcome to the game of Concentration! \n Please enter your name";
+		JLabel background = new JLabel(new ImageIcon("resources/thinkingImg.jpg"));
+		JPanel panel = new JPanel(new GridLayout(2,2));
+		JPanel titlePanel = new JPanel(new FlowLayout());
+		startButton = new JButton("Start Game");
+		startButton.addActionListener(new ButtonListener());
 		
-		//Continues asking for a name until user name is not empty
-		while(userName.equals(empty))
-			userName = JOptionPane.showInputDialog(message);
+		Font f = new Font("Courier", Font.BOLD, 20);
+
+		JLabel name = new JLabel("Player Name:");
+		JLabel title = new JLabel("Memory Game Setup");
+		title.setFont(f);
+		JLabel difficultyLabel = new JLabel("Choose Difficulty:");
 		
-		//Starts a new game
-		new GameFrame(Util.firstToUpper(userName), GameDifficulty.EASY);
-	}	
-	/**
-	 * Main method starts up the dialog
-	 * @param args - An array of strings
-	 * @return void
-	 */
+		nameInput = new JTextField();
+		
+		
+		
+		background.setLayout(null);
+		background.add(titlePanel);
+		background.add(panel);
+		background.add(startButton);
+		
+		
+		panel.setSize(390, 70);
+		panel.setLocation(200, 130);
+		panel.setBackground(Color.WHITE);
+		
+		panel.add(name);
+		panel.add(nameInput);
+		panel.add(difficultyLabel);
+		panel.add(difficultyLevel);
+		
+		titlePanel.setBackground(Color.WHITE);
+		titlePanel.setSize(300,50);
+		titlePanel.setLocation(235,70);
+		titlePanel.add(title);
+		
+		startButton.setSize(100, 30);
+		startButton.setLocation(350, 220);
+		startButton.setBackground(Color.YELLOW);
+		
+		this.getContentPane().add(background);
+		this.setSize(900,575);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setVisible(true);
+		
+	}
+	
+	private class ButtonListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == startButton){
+				if((GameDifficulty)difficultyLevel.getSelectedItem() != GameDifficulty.UNSET){
+					new GameFrame(Util.firstToUpper(nameInput.getText()), 
+							(GameDifficulty)difficultyLevel.getSelectedItem());
+				}
+			}
+			/** TODO: Create JDialog to tell user to pick a difficulty */
+			else{}
+		}
+		
+	}
 	public static void main(String[] args){
 		new DialogUI();
 	}

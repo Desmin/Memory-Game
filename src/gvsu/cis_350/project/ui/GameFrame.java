@@ -110,7 +110,9 @@ public class GameFrame extends JFrame implements Observer {
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		mainPanel.setBackground(Color.WHITE);
 		//Creates panel to hold cards
-		gridPanel = new JPanel(new GridLayout(4,4));
+		
+		gridPanel = new JPanel(new GridLayout(this.yLength(difficulty), xLength(difficulty)));
+		
 		gridPanel.setBackground(Color.WHITE);
 		//Creates panel to hold title
 		topPanel = new JPanel();
@@ -196,7 +198,14 @@ public class GameFrame extends JFrame implements Observer {
 		this.setVisible(true);
 		this.setSize(750,600);
 		this.setLocationRelativeTo(null);
-		this.setResizable(false);
+		//this.setResizable(false);
+	}
+	
+	private int xLength(GameDifficulty gd){
+		return gd.getNumberOfCards() / 4;
+	}
+	private int yLength(GameDifficulty gd){
+		return gd.getNumberOfCards() / xLength(gd);
 	}
 
 	@Override
