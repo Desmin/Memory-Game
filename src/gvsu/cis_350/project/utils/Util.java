@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import gvsu.cis_350.project.core.Card;
+import gvsu.cis_350.project.core.GameSessionSetting;
 import gvsu.cis_350.project.core.Card.CardType;
-import gvsu.cis_350.project.core.game.GameDifficulty;
 
 /**
  * Util will house utility methods for various use throughout
@@ -36,7 +36,7 @@ public final class Util {
 	 * @return An ArrayList<Card> holding the required amount of cards for the
 	 * given difficulty.
 	 */
-	public static List<Card> fetchRandomizedList(GameDifficulty difficulty) {
+	public static List<Card> fetchRandomizedList(GameSessionSetting difficulty) {
 		int limit = difficulty.getNumberOfCards();
 		List<Card> list = new LinkedList<>();
 		for (CardType type : CardType.values()) {
@@ -48,8 +48,22 @@ public final class Util {
 		return randomize(list);
 	}
 	
-	public static String firstToUpper(String string) {
-		return Character.toUpperCase(string.charAt(0)) + string.substring(1).toLowerCase();
+	public static String toLowerFirstUC(String s) {
+		s = s.toLowerCase();
+		for (int i = 0; i < s.length(); i++) {
+			if (i == 0) {
+				s = String.format("%s%s", Character.toUpperCase(s.charAt(0)),
+						s.substring(1));
+			}
+			if (!Character.isLetterOrDigit(s.charAt(i))) {
+				if (i + 1 < s.length()) {
+					s = String.format("%s%s%s", s.subSequence(0, i + 1),
+							Character.toUpperCase(s.charAt(i + 1)),
+							s.substring(i + 2));
+				}
+			}
+		}
+		return s.replace("_", " ").trim();
 	}
 
 }

@@ -86,11 +86,7 @@ public final class ObservableActionListener extends Observable implements Action
 		//Yes/No dialog asking user if they want to quit
 		int quit = JOptionPane.showConfirmDialog(null, 
 		"Are you sure you wish to quit?", "Quit Game?",JOptionPane.YES_NO_OPTION);
-		if(quit == JOptionPane.YES_OPTION){
-			return true;
-		}
-		else
-			return false;
+		return quit == JOptionPane.YES_OPTION;
 	}
 
 }

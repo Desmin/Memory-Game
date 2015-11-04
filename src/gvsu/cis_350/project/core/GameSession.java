@@ -7,15 +7,15 @@ import java.util.Observer;
 
 import javax.swing.JLabel;
 
-import gvsu.cis_350.project.core.game.GameDifficulty;
+import gvsu.cis_350.project.ui.GameFrame;
 
 public abstract class GameSession extends Observable implements Observer {
-	
+
 	private String uiAction;
-	
+
 	protected Player sessionPlayer;
 	protected int sessionMatches = 0;
-	protected GameDifficulty sessionDifficulty = GameDifficulty.UNSET;
+	protected GameSessionDifficulty sessionDifficulty;
 	protected boolean clickingEnabled = true;
 	protected Card lastCardClicked;
 	protected Map<JLabel, Card> cardMap = new HashMap<>();
@@ -23,17 +23,17 @@ public abstract class GameSession extends Observable implements Observer {
 	public String getUIAction() {
 		return uiAction;
 	}
-	
+
 	public void setUIAction(String action) {
 		this.uiAction = action;
 		this.setChanged();
 		this.notifyObservers();
 	}
-	
+
 	public void setCardMap(Map<JLabel, Card> cardMap) {
 		this.cardMap = cardMap;
 	}
-	
+
 	public int getSessionMatches() {
 		return sessionMatches;
 	}
@@ -42,10 +42,17 @@ public abstract class GameSession extends Observable implements Observer {
 		this.sessionMatches++;
 	}
 
-	public abstract boolean initialize(String sessionPlayerName, GameDifficulty sessionDifficulty);
-	
+	public abstract boolean initialize(String sessionPlayerName, GameSessionDifficulty sessionDifficulty);
+
 	public abstract boolean reset();
-	
+
 	public abstract void quit(boolean restart);
+
+	public void endGameWithLoss() {
+		System.out.println("You lost!");
+		sessionDifficulty.reset();
+		new GameFrame(sessionPlayer.getName(), sessionDifficulty);
+		setUIAction("dispose");
+	}
 
 }
