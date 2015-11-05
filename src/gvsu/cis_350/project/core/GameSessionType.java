@@ -24,4 +24,5 @@ public enum GameSessionType {
 	public String toString() {
 		return Util.toLowerFirstUC(this.name());
 	}
+	
 }

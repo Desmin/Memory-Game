@@ -28,6 +28,12 @@ public class CardTest {
 		assertNotEquals(card2, card3);
 		assertNotEquals(card1, card3);
 		
+		assertEquals(card1.getCardType(), card1_test.getCardType());
+		card1.setHasBeenClicked(true);
+		card1_test.setHasBeenClicked(true);
+		assertEquals(card1.hasBeenClicked(), card1_test.hasBeenClicked());
+		assertEquals(card1.getCardType(), card1_test.getCardType());
+		
 	}
 
 }

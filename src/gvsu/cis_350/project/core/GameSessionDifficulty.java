@@ -71,5 +71,16 @@ public final class GameSessionDifficulty extends Observable {
 		}
 		return toReturn;
 	}
+	
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof GameSessionDifficulty){
+			GameSessionDifficulty game = (GameSessionDifficulty)obj;
+				return this.sessionSetting == game.sessionSetting && this.sessionType == game.sessionType;
+		}
+		return false;
+	}
+	
 
 }
