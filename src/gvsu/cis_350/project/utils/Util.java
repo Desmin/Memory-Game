@@ -37,7 +37,7 @@ public final class Util {
      * given difficulty.
      */
     public static List<Card> fetchRandomizedList(GameSessionSetting difficulty) {
-        int limit = difficulty.getNumberOfCards();
+        int limit = difficulty.getNumberOfCards() / 2;
         List<Card> list = new LinkedList<>();
         for (CardType type : CardType.values()) {
             if ((type.ordinal() + 1) <= limit) {

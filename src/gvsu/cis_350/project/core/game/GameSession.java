@@ -2,7 +2,6 @@ package gvsu.cis_350.project.core.game;
 
 import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.Player;
-import gvsu.cis_350.project.ui.GameFrame;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -49,10 +48,9 @@ public abstract class GameSession extends Observable implements Observer {
     public abstract void quit(boolean restart);
 
     public void endGameWithLoss() {
-        System.out.println("You lost!");
-        sessionDifficulty.reset();
-        new GameFrame(sessionPlayer.getName(), sessionDifficulty);
-        setUIAction("dispose");
+        int quit = JOptionPane.showConfirmDialog(null,
+               "You lost the game. Do you wish to restart?", "Game Last!", JOptionPane.YES_NO_OPTION);
+        quit(quit == JOptionPane.YES_OPTION);
     }
 
 }
