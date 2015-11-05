@@ -84,7 +84,18 @@ public final class Card {
         PINEAPPLE(new ImageIcon(IMG_PATH + "pineappleImg.png")),
         STRAWBERRY(new ImageIcon(IMG_PATH + "strawberryImg.png")),
         GRAPES(new ImageIcon(IMG_PATH + "grapesImg.jpg")),
-        CHERRY(new ImageIcon(IMG_PATH + "cherryImg.png"));
+        CHERRY(new ImageIcon(IMG_PATH + "cherryImg.png")),
+        
+        BROWN_HAT(new ImageIcon(IMG_PATH + "brownHatImg.png")),
+        ORANGE_CAR(new ImageIcon(IMG_PATH + "carOrangeImg.png")),
+        PURPLE_CAR(new ImageIcon(IMG_PATH + "carPurpleImg.png")),
+        PENCIL(new ImageIcon(IMG_PATH + "pencilImg.png")),
+        RED_HAT(new ImageIcon(IMG_PATH + "redHatImg.png")),
+        WHITE_FLOWER(new ImageIcon(IMG_PATH + "whiteFlowerImg.jpg"))
+        
+        
+        
+        ;
 
         /**
          * This cards face image.
