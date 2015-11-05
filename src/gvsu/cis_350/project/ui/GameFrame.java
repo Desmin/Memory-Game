@@ -119,8 +119,11 @@ public class GameFrame extends JFrame implements Observer {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(Color.WHITE);
         // Creates panel to hold cards
+
+        
         gridPanel = new JPanel(
-                new GridLayout(this.yLength(difficulty.getSessionSetting()), xLength(difficulty.getSessionSetting())));
+                new GridLayout(this.yLength(difficulty.getSessionSetting()), 
+                			   xLength(difficulty.getSessionSetting())));
 
         gridPanel.setBackground(Color.WHITE);
         // Creates panel to hold title
@@ -224,7 +227,7 @@ public class GameFrame extends JFrame implements Observer {
     }
 
     private int xLength(GameSessionSetting gd) {
-        return gd.getNumberOfCards() / 4;
+    	return gd.getNumberOfCards() / 4;
     }
 
     private int yLength(GameSessionSetting gd) {
