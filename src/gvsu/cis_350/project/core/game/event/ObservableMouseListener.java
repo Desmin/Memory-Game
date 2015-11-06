@@ -1,4 +1,4 @@
-package gvsu.cis_350.project.core.game.impl.event;
+package gvsu.cis_350.project.core.game.event;
 
 import gvsu.cis_350.project.core.game.GameSession;
 

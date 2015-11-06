@@ -27,7 +27,7 @@ public class FileIO {
      * @param player The Player whose data we'll be saving.
      * @throws IOException
      */
-    public static final void savePlayerData(Player player) throws IOException {
+    public static void savePlayerData(Player player) throws IOException {
         logger.log(Level.INFO, "Saving data for user: " + player.getName());
         File dir = new File(SAVE_PATH);
         if (!dir.exists())
@@ -47,7 +47,7 @@ public class FileIO {
      * @return The Player with previously saved data, or if previous data
      * doesn't exist a new Player.
      */
-    public static final Player loadPlayerData(String name) {
+    public static Player loadPlayerData(String name) {
         logger.log(Level.INFO, "Attempting to find user: " + name);
         Player newPlayer = new Player(name, 0);
         FileInputStream file;

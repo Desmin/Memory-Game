@@ -1,34 +1,16 @@
-package gvsu.cis_350.project.core.game.impl.event;
+package gvsu.cis_350.project.core.game.event;
 
 import gvsu.cis_350.project.core.game.GameSession;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Observable;
 
-public final class ObservableActionListener extends Observable implements ActionListener {
+public final class ObservableActionListener extends Observable implements ActionListener, WindowListener {
 
-    /**
-     * Game rules - how to play
-     */
-    private final String ABOUT_GAME = "How to Play...\n\n" +
-            "1.) Click a card with a '?' picture.\n" +
-            "	   The card will turn over and reveal a picture.\n" +
-            "2.) Click another card that you think is a match.\n" +
-            "    The card will turn over and reveal another\n" +
-            "    picture that is the same or different.\n" +
-            "3.) If the cards are a match, you gain a point and\n" +
-            "    the cards will disappear.\n" +
-            "4.) Continue trying to match all the pairs of cards\n" +
-            "    until they are all gone.\n" +
-            "5.) You win the game when all 8 pairs are matched.";
-    /**
-     * Game version - version, date, and authors
-     */
-    private final String VERSION_INFO = "Version: 1.0\n" +
-            "Date: 10/12/15\n" +
-            "Authors: Desmin Little, Emily Theis, Nick Spruit";
     private boolean resetFlag = false;
 
     public ObservableActionListener(GameSession session) {
@@ -70,11 +52,31 @@ public final class ObservableActionListener extends Observable implements Action
 
         //Shows info about game rules
         if (name.equals("about")) {
+            /*
+      Game rules - how to play
+     */
+            String ABOUT_GAME = "How to Play...\n\n" +
+                    "1.) Click a card with a '?' picture.\n" +
+                    "	   The card will turn over and reveal a picture.\n" +
+                    "2.) Click another card that you think is a match.\n" +
+                    "    The card will turn over and reveal another\n" +
+                    "    picture that is the same or different.\n" +
+                    "3.) If the cards are a match, you gain a point and\n" +
+                    "    the cards will disappear.\n" +
+                    "4.) Continue trying to match all the pairs of cards\n" +
+                    "    until they are all gone.\n" +
+                    "5.) You win the game when all 8 pairs are matched.";
             JOptionPane.showMessageDialog(item.getParent(), ABOUT_GAME, "HOW TO PLAY CONCENTRATION", 1);
 
         }
         //Shows info about version of game
         if (name.equals("version")) {
+            /*
+      Game version - version, date, and authors
+     */
+            String VERSION_INFO = "Version: 1.0\n" +
+                    "Date: 10/12/15\n" +
+                    "Authors: Desmin Little, Emily Theis, Nick Spruit";
             JOptionPane.showMessageDialog(item.getParent(), VERSION_INFO, "VERSION", 1);
         }
     }
@@ -91,4 +93,26 @@ public final class ObservableActionListener extends Observable implements Action
         return quit == JOptionPane.YES_OPTION;
     }
 
+    @Override
+    public void windowOpened(WindowEvent e) {}
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        flagChange(false);
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {}
+
+    @Override
+    public void windowIconified(WindowEvent e) {}
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {}
+
+    @Override
+    public void windowActivated(WindowEvent e) {}
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {}
 }

@@ -5,8 +5,8 @@ import gvsu.cis_350.project.core.game.GameSession;
 import gvsu.cis_350.project.core.game.GameSessionDifficulty;
 import gvsu.cis_350.project.core.game.GameSessionSetting;
 import gvsu.cis_350.project.core.game.impl.SinglePlayerGameSession;
-import gvsu.cis_350.project.core.game.impl.event.ObservableActionListener;
-import gvsu.cis_350.project.core.game.impl.event.ObservableMouseListener;
+import gvsu.cis_350.project.core.game.event.ObservableActionListener;
+import gvsu.cis_350.project.core.game.event.ObservableMouseListener;
 import gvsu.cis_350.project.utils.Util;
 
 import javax.swing.*;
@@ -27,31 +27,9 @@ import java.util.List;
 public class GameFrame extends JFrame implements Observer {
 
     /**
-     * Main panel that holds top, middle, and bottom panels
-     */
-    private JPanel mainPanel;
-
-    /**
-     * Top panel holds the title of the game
-     */
-    private JPanel topPanel;
-
-    /**
-     * Bottom panel holds the player info
-     */
-    private JPanel playerInfoPanel;
-
-    private JPanel difficultyInfoPanel;
-
-    /**
      * Middle panel holds the cards in a grid
      */
     private JPanel gridPanel;
-
-    /**
-     * Label for player name
-     */
-    private JLabel playerNameLabel;
 
     /**
      * Label for player score
@@ -62,46 +40,6 @@ public class GameFrame extends JFrame implements Observer {
      * Label for message to user
      */
     private JLabel difficultyInfoLabel;
-
-    /**
-     * Label for title
-     */
-    private JLabel gameTitleLabel;
-
-    /**
-     * Menu bar
-     */
-    private JMenuBar menuBar;
-
-    /**
-     * File menu
-     */
-    private JMenu fileMenu;
-
-    /**
-     * About menu
-     */
-    private JMenu aboutMenu;
-
-    /**
-     * New game menu item
-     */
-    private JMenuItem newGameItem;
-
-    /**
-     * Quit menu item
-     */
-    private JMenuItem quitItem;
-
-    /**
-     * About game menu item - for info about rules
-     */
-    private JMenuItem aboutItem;
-
-    /**
-     * Version item - for info about version
-     */
-    private JMenuItem versionItem;
 
     /**
      * Constructor creates cards for game, creates panels to add to frame, sets
@@ -115,35 +53,65 @@ public class GameFrame extends JFrame implements Observer {
         difficulty.addObserver(this);
 
         // Create main underlying panel
-        mainPanel = new JPanel();
+        /*
+      Main panel that holds top, middle, and bottom panels
+     */
+        JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(Color.WHITE);
         // Creates panel to hold cards
 
         
-        gridPanel = new JPanel(
+       gridPanel = new JPanel(
                 new GridLayout(this.yLength(difficulty.getSessionSetting()), 
                 			   xLength(difficulty.getSessionSetting())));
 
         gridPanel.setBackground(Color.WHITE);
         // Creates panel to hold title
-        topPanel = new JPanel();
+        /*
+      Top panel holds the title of the game
+     */
+        JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.WHITE);
         // Creates panel to hold player info
-        playerInfoPanel = new JPanel();
+        /*
+      Bottom panel holds the player info
+     */
+        JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setBackground(Color.WHITE);
         playerInfoPanel.setLayout(new GridLayout(1, 2));
-        difficultyInfoPanel = new JPanel();
+        JPanel difficultyInfoPanel = new JPanel();
         difficultyInfoPanel.setBackground(Color.WHITE);
 
         // creates menus and items for file, quit, about, and version
-        menuBar = new JMenuBar();
-        fileMenu = new JMenu("File");
-        aboutMenu = new JMenu("About");
-        newGameItem = new JMenuItem("New Game");
-        quitItem = new JMenuItem("Quit");
-        aboutItem = new JMenuItem("About Game");
-        versionItem = new JMenuItem("Version");
+        /*
+      Menu bar
+     */
+        JMenuBar menuBar = new JMenuBar();
+        /*
+      File menu
+     */
+        JMenu fileMenu = new JMenu("File");
+        /*
+      About menu
+     */
+        JMenu aboutMenu = new JMenu("About");
+        /*
+      New game menu item
+     */
+        JMenuItem newGameItem = new JMenuItem("New Game");
+        /*
+      Quit menu item
+     */
+        JMenuItem quitItem = new JMenuItem("Quit");
+        /*
+      About game menu item - for info about rules
+     */
+        JMenuItem aboutItem = new JMenuItem("About Game");
+        /*
+      Version item - for info about version
+     */
+        JMenuItem versionItem = new JMenuItem("Version");
 
         // Adds menus and items to menu bar
         this.setJMenuBar(menuBar);
@@ -173,9 +141,9 @@ public class GameFrame extends JFrame implements Observer {
 
         // Adds the cards onto the frame
         list.forEach((card) -> {
-            JLabel label = new JLabel();
+            JLabel label = new JLabel(Card.BACK, JLabel.CENTER);
             label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-            label.setIcon(Card.BACK);
+            //label.setIcon(Card.BACK);
             label.addMouseListener(new ObservableMouseListener(session));
             gridPanel.add(label);
             map.put(label, card);
@@ -186,13 +154,19 @@ public class GameFrame extends JFrame implements Observer {
         Font f = new Font("Courier", Font.BOLD, 20);
 
         // Creates player, message, and game title labels with new font
-        playerNameLabel = new JLabel("Player Name: " + name, SwingConstants.LEFT);
+        /*
+      Label for player name
+     */
+        JLabel playerNameLabel = new JLabel("Player Name: " + name, SwingConstants.LEFT);
         playerNameLabel.setFont(f);
         playerScoreLabel = new JLabel("    Player Score: 0", SwingConstants.LEFT);
         playerScoreLabel.setFont(f);
         difficultyInfoLabel = new JLabel("", SwingConstants.CENTER);
         difficultyInfoLabel.setFont(f);
-        gameTitleLabel = new JLabel("The Game of Concentration", SwingConstants.CENTER);
+        /*
+      Label for title
+     */
+        JLabel gameTitleLabel = new JLabel("The Game of Concentration", SwingConstants.CENTER);
         gameTitleLabel.setFont(f);
 
         // Adds label to bottom panel
@@ -208,11 +182,12 @@ public class GameFrame extends JFrame implements Observer {
         mainPanel.add(difficultyInfoPanel);
 
         // Sets title, adds main panel, sets size, etc.
-        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        //this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(listener);
         this.setTitle("Concentration");
         this.getContentPane().add(mainPanel);
         this.setVisible(true);
-        this.setSize(750, 600);
+        this.setSize(1200, 800);
         this.setLocationRelativeTo(null);
         // this.setResizable(false);
     }
@@ -249,7 +224,6 @@ public class GameFrame extends JFrame implements Observer {
                 case "repaint":
                     revalidate();
                     repaint();
-                    return;
             }
         } else if (ob instanceof GameSessionDifficulty) {
             if (Objects.isNull(difficultyInfoLabel))

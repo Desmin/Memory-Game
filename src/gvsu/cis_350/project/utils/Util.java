@@ -66,4 +66,12 @@ public final class Util {
         return s.replace("_", " ").trim();
     }
 
+    public static String[] formatUserSelection(String[] users) {
+        String[] formattedUsers = new String[users.length+1];
+        formattedUsers[0] = "";
+        for (int i = 0; i < users.length; i++)
+            formattedUsers[i+1] = (String)users[i].subSequence(0, users[i].indexOf("."));
+        return formattedUsers;
+    }
+
 }

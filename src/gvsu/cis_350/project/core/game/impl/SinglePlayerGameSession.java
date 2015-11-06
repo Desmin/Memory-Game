@@ -3,8 +3,8 @@ package gvsu.cis_350.project.core.game.impl;
 import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.game.GameSession;
 import gvsu.cis_350.project.core.game.GameSessionDifficulty;
-import gvsu.cis_350.project.core.game.impl.event.ObservableActionListener;
-import gvsu.cis_350.project.core.game.impl.event.ObservableMouseListener;
+import gvsu.cis_350.project.core.game.event.ObservableActionListener;
+import gvsu.cis_350.project.core.game.event.ObservableMouseListener;
 import gvsu.cis_350.project.io.FileIO;
 import gvsu.cis_350.project.ui.GameFrame;
 
@@ -71,7 +71,6 @@ public class SinglePlayerGameSession extends GameSession {
     public void update(Observable ob, Object o) {
         if (ob instanceof ObservableActionListener) {
             quit(((ObservableActionListener) ob).getFlag());
-            return;
         } else if (ob instanceof ObservableMouseListener) {
             JLabel label = ((ObservableMouseListener) ob).getLabelClicked();
             onCardClick(label);
@@ -98,7 +97,7 @@ public class SinglePlayerGameSession extends GameSession {
         // be checking for a match.
 
         boolean match = card.equals(lastCardClicked); // Do we have a match?
-        new SwingWorker<Void, Void>() { // SwingWroker to delay the
+        new SwingWorker<Void, Void>() { // SwingWorker to delay the
             // flipping/resetting of the clicked
             // cards.
 

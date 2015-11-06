@@ -3,39 +3,44 @@ package gvsu.cis_350.project.ui;
 import gvsu.cis_350.project.core.game.GameSessionDifficulty;
 import gvsu.cis_350.project.core.game.GameSessionSetting;
 import gvsu.cis_350.project.core.game.GameSessionType;
+import gvsu.cis_350.project.utils.Util;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
 
 /**
  * This class represents a dialog that starts the game. It asks for the user's
  * name and then creates a main user interface for the game.
  *
  * @author Nick Spruit
- * @version 10/7/2015
+ * @author Desmin Little
+ * 10/7/2015
  */
 
 public class DialogUI extends JFrame {
 
     private JComboBox<GameSessionSetting> difficultyLevel;
     private JComboBox<GameSessionType> gameSessionType;
-    private JButton startButton;
+    private JComboBox<String> userSelection;
     private JTextField nameInput;
 
     public DialogUI() {
         this.setTitle("Setup Memory Game");
         this.setBackground(Color.WHITE);
-        difficultyLevel = new JComboBox<GameSessionSetting>(GameSessionSetting.values());
+        difficultyLevel = new JComboBox<>(GameSessionSetting.values());
         difficultyLevel.setBackground(Color.WHITE);
-        gameSessionType = new JComboBox<GameSessionType>(GameSessionType.values());
+        gameSessionType = new JComboBox<>(GameSessionType.values());
         gameSessionType.setBackground(Color.WHITE);
 
         JLabel background = new JLabel(new ImageIcon("resources/thinkingImg.jpg"));
         JPanel panel = new JPanel(new GridLayout(3, 2));
         JPanel titlePanel = new JPanel(new FlowLayout());
-        startButton = new JButton("Start Game");
+        JButton startButton = new JButton("Start Game");
         startButton.addActionListener(new ButtonListener());
 
         Font f = new Font("Courier", Font.BOLD, 20);
@@ -47,6 +52,9 @@ public class DialogUI extends JFrame {
         JLabel typeLabel = new JLabel("Choose Type:");
         nameInput = new JTextField();
 
+        userSelection = new JComboBox<>(Util.formatUserSelection(new File("./data/").list()));
+        userSelection.setEditable(true);
+
         background.setLayout(null);
         background.add(titlePanel);
         background.add(panel);
@@ -57,7 +65,7 @@ public class DialogUI extends JFrame {
         panel.setBackground(Color.WHITE);
 
         panel.add(name);
-        panel.add(nameInput);
+        panel.add(userSelection);
         panel.add(difficultyLabel);
         panel.add(difficultyLevel);
         panel.add(typeLabel);
@@ -78,6 +86,12 @@ public class DialogUI extends JFrame {
         this.setResizable(false);
         this.setVisible(true);
 
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(1);
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -91,9 +105,13 @@ public class DialogUI extends JFrame {
             GameSessionDifficulty dif = new GameSessionDifficulty(
                     (GameSessionSetting) difficultyLevel.getSelectedItem(),
                     (GameSessionType) gameSessionType.getSelectedItem());
-            System.out.println(dif.getSessionSetting().name());
-            System.out.println(dif.getSessionType().name());
-            new GameFrame(nameInput.getText(), dif);
+            String user = (String)userSelection.getSelectedItem();
+            if (!user.trim().equals(""))
+                new GameFrame(user, dif);
+            else {
+                userSelection.grabFocus();
+                return;
+            }
             dispose();
         }
 
