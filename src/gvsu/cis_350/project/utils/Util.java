@@ -8,6 +8,7 @@ import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Util will house utility methods for various use throughout
@@ -67,6 +68,8 @@ public final class Util {
     }
 
     public static String[] formatUserSelection(String[] users) {
+    	if (Objects.isNull(users))
+    		return new String[] {};
         String[] formattedUsers = new String[users.length+1];
         formattedUsers[0] = "";
         for (int i = 0; i < users.length; i++)

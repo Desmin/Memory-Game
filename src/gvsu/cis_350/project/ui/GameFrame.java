@@ -161,7 +161,7 @@ public class GameFrame extends JFrame implements Observer {
         playerNameLabel.setFont(f);
         playerScoreLabel = new JLabel("    Player Score: 0", SwingConstants.LEFT);
         playerScoreLabel.setFont(f);
-        difficultyInfoLabel = new JLabel("", SwingConstants.CENTER);
+        difficultyInfoLabel = new JLabel("     ", SwingConstants.LEFT);
         difficultyInfoLabel.setFont(f);
         /*
       Label for title
@@ -171,25 +171,29 @@ public class GameFrame extends JFrame implements Observer {
 
         // Adds label to bottom panel
         topPanel.add(gameTitleLabel);
+        topPanel.add(difficultyInfoLabel);
         playerInfoPanel.add(playerNameLabel);
         playerInfoPanel.add(playerScoreLabel);
-        difficultyInfoPanel.add(difficultyInfoLabel);
+        //difficultyInfoPanel.add(difficultyInfoLabel);
 
         // Adds top, grid, and bottom panel to main
         mainPanel.add(topPanel);
         mainPanel.add(gridPanel);
         mainPanel.add(playerInfoPanel);
-        mainPanel.add(difficultyInfoPanel);
+        //mainPanel.add(difficultyInfoPanel);
 
         // Sets title, adds main panel, sets size, etc.
-        //this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(listener);
         this.setTitle("Concentration");
+        
         this.getContentPane().add(mainPanel);
-        this.setVisible(true);
-        this.setSize(1200, 800);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.pack();
         this.setLocationRelativeTo(null);
-        // this.setResizable(false);
+        this.setVisible(true);
+        
+        
     }
 
     /**
@@ -202,7 +206,10 @@ public class GameFrame extends JFrame implements Observer {
     }
 
     private int xLength(GameSessionSetting gd) {
-    	return gd.getNumberOfCards() / 4;
+    	if(gd.getNumberOfCards() == 16 || gd.getNumberOfCards() == 32)
+    		return gd.getNumberOfCards() / 4;
+    	else
+    		return 8;
     }
 
     private int yLength(GameSessionSetting gd) {
