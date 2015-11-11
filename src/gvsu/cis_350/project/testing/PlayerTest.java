@@ -25,6 +25,13 @@ public class PlayerTest {
         assertEquals(player1, player3);
         assertNotEquals(player1, player2);
         assertNotEquals(player3, player4);
+    }
+    
+    @Test
+    public void winTest() {
+        Player player1 = new Player("test", 8);
+        Player player2 = new Player("test2", 10);
+        Player player3 = new Player("test", 8);
 
         player1.addWin();
 

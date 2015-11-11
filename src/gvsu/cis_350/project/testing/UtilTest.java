@@ -13,18 +13,20 @@ import static org.junit.Assert.assertNotEquals;
 public class UtilTest {
 
     @Test
-    public void test() {
+    public void randomTest() {
         List<Card> cards1 = Util.fetchRandomizedList(GameSessionSetting.MEDIUM);
         List<Card> cards2 = Util.fetchRandomizedList(GameSessionSetting.MEDIUM);
         assertNotEquals(cards1, cards2);
+    }
+    
+    @Test 
+    public void caseTest(){
 
-        String s1 = "BASIC";
         String s2 = "Basic";
         String s3 = Util.toLowerFirstUC(s2);
         assertEquals(s2, s3);
 
         String s4 = "B*sic";
-        String s5 = Util.toLowerFirstUC(s4);
         assertNotEquals(s4, s2);
     }
 
