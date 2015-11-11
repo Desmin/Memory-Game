@@ -1,6 +1,7 @@
 package gvsu.cis_350.project.testing;
 
 import org.junit.Test;
+import gvsu.cis_350.project.core.game.*;
 
 /**
  * A class to test game difficulty settings.
@@ -14,8 +15,8 @@ public class GameDifficultyTest {
         /*String s1 = new String("Player 1");
 		String s2 = new String("Player 2");
 		String s3 = new String("Player 3");
-		MemoryGame game1 = new MemoryGame();
-		game1.initialize(s1, GameDifficulty.EASY);
+		GameSessionDifficulty game1;
+		game1.initialize(s1, setSessionTypeValue.16);
 		MemoryGame game2 = new MemoryGame();
 		game2.initialize(s2, GameDifficulty.EASY);
 		MemoryGame game3 = new MemoryGame();
