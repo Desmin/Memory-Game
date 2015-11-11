@@ -47,6 +47,7 @@ public class GameFrame extends JFrame implements Observer {
      */
     public GameFrame(String name, GameSessionDifficulty difficulty) {
 
+    	//Creates and starts a new game session
         SinglePlayerGameSession session = new SinglePlayerGameSession();
         session.initialize(name, difficulty);
         session.addObserver(this);
