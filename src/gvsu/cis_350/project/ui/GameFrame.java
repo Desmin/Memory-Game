@@ -162,8 +162,7 @@ public class GameFrame extends JFrame implements Observer {
         //mainPanel.add(difficultyInfoPanel);
 
         // Sets title, adds main panel, sets size, etc.
-        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(listener);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setTitle("Concentration");
         this.getContentPane().add(mainPanel);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
