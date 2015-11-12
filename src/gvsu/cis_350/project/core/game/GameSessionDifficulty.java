@@ -64,9 +64,9 @@ public final class GameSessionDifficulty extends Observable {
                     : sessionTypeValue.longValue() > 60000 ? "m 'minutes'" : "";
             form += " ss 'seconds remaining!'";
             SimpleDateFormat format = new SimpleDateFormat(form);
-            toReturn = format.format(new Date(sessionTypeValue.longValue()));
+            toReturn = "    " + format.format(new Date(sessionTypeValue.longValue()));
         } else if (this.getSessionType().hasLimitedMatchAttempts()) {
-            toReturn = sessionTypeValue.intValue() + " match attempts remaining!";
+            toReturn = "    " + sessionTypeValue.intValue() + " match attempts remaining!";
         }
         return toReturn;
     }

@@ -8,7 +8,6 @@ import gvsu.cis_350.project.core.game.impl.SinglePlayerGameSession;
 import gvsu.cis_350.project.core.game.event.ObservableActionListener;
 import gvsu.cis_350.project.core.game.event.ObservableMouseListener;
 import gvsu.cis_350.project.utils.Util;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -47,70 +46,53 @@ public class GameFrame extends JFrame implements Observer {
      */
     public GameFrame(String name, GameSessionDifficulty difficulty) {
 
+    	//Creates and starts a new game session
         SinglePlayerGameSession session = new SinglePlayerGameSession();
         session.initialize(name, difficulty);
         session.addObserver(this);
         difficulty.addObserver(this);
 
         // Create main underlying panel
-        /*
-      Main panel that holds top, middle, and bottom panels
-     */
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(Color.WHITE);
-        // Creates panel to hold cards
-
         
-       gridPanel = new JPanel(
+        // Creates panel to hold cards
+        gridPanel = new JPanel(
                 new GridLayout(this.yLength(difficulty.getSessionSetting()), 
                 			   xLength(difficulty.getSessionSetting())));
-
         gridPanel.setBackground(Color.WHITE);
-        // Creates panel to hold title
-        /*
-      Top panel holds the title of the game
-     */
+        
+        //Top panel holds the title and timing/limit info
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.WHITE);
-        // Creates panel to hold player info
-        /*
-      Bottom panel holds the player info
-     */
+       
+        //Bottom panel holds player info
         JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setBackground(Color.WHITE);
         playerInfoPanel.setLayout(new GridLayout(1, 2));
         JPanel difficultyInfoPanel = new JPanel();
         difficultyInfoPanel.setBackground(Color.WHITE);
 
-        // creates menus and items for file, quit, about, and version
-        /*
-      Menu bar
-     */
+        //Menu bar
         JMenuBar menuBar = new JMenuBar();
-        /*
-      File menu
-     */
+        
+        //File menu
         JMenu fileMenu = new JMenu("File");
-        /*
-      About menu
-     */
+       
+        //About menu
         JMenu aboutMenu = new JMenu("About");
-        /*
-      New game menu item
-     */
+       
+        //New game menu item
         JMenuItem newGameItem = new JMenuItem("New Game");
-        /*
-      Quit menu item
-     */
+       
+        //Quit menu item
         JMenuItem quitItem = new JMenuItem("Quit");
-        /*
-      About game menu item - for info about rules
-     */
+
+        //About menu item
         JMenuItem aboutItem = new JMenuItem("About Game");
-        /*
-      Version item - for info about version
-     */
+        
+        //Version menu item
         JMenuItem versionItem = new JMenuItem("Version");
 
         // Adds menus and items to menu bar
@@ -122,19 +104,20 @@ public class GameFrame extends JFrame implements Observer {
         aboutMenu.add(aboutItem);
         aboutMenu.add(versionItem);
 
+        //Sets names for each item
         newGameItem.setName("new_game");
         quitItem.setName("quit_game");
         aboutItem.setName("about");
         versionItem.setName("version");
-
-        ObservableActionListener listener = new ObservableActionListener(session);
+        
         // Adds action listeners to each menu item
+        ObservableActionListener listener = new ObservableActionListener(session);
         newGameItem.addActionListener(listener);
         quitItem.addActionListener(listener);
         aboutItem.addActionListener(listener);
         versionItem.addActionListener(listener);
 
-        // Fills the list will two of each card type using the given
+        // Fills the list with two of each card type using the given
         // difficulty level and randomizes their order.
         Map<JLabel, Card> map = new HashMap<>();
         List<Card> list = Util.fetchRandomizedList(difficulty.getSessionSetting());
@@ -148,48 +131,44 @@ public class GameFrame extends JFrame implements Observer {
             gridPanel.add(label);
             map.put(label, card);
         });
-
         session.setCardMap(map);
-        // Sets up a font
+        
+        //Sets up a font
         Font f = new Font("Courier", Font.BOLD, 20);
 
-        // Creates player, message, and game title labels with new font
-        /*
-      Label for player name
-     */
+        //Creates player, message, and game labels
         JLabel playerNameLabel = new JLabel("Player Name: " + name, SwingConstants.LEFT);
         playerNameLabel.setFont(f);
         playerScoreLabel = new JLabel("    Player Score: 0", SwingConstants.LEFT);
         playerScoreLabel.setFont(f);
-        difficultyInfoLabel = new JLabel("", SwingConstants.CENTER);
+        difficultyInfoLabel = new JLabel("     ", SwingConstants.LEFT);
         difficultyInfoLabel.setFont(f);
-        /*
-      Label for title
-     */
+
+        //Label for title
         JLabel gameTitleLabel = new JLabel("The Game of Concentration", SwingConstants.CENTER);
         gameTitleLabel.setFont(f);
 
         // Adds label to bottom panel
         topPanel.add(gameTitleLabel);
+        topPanel.add(difficultyInfoLabel);
         playerInfoPanel.add(playerNameLabel);
         playerInfoPanel.add(playerScoreLabel);
-        difficultyInfoPanel.add(difficultyInfoLabel);
+        //difficultyInfoPanel.add(difficultyInfoLabel);
 
         // Adds top, grid, and bottom panel to main
         mainPanel.add(topPanel);
         mainPanel.add(gridPanel);
         mainPanel.add(playerInfoPanel);
-        mainPanel.add(difficultyInfoPanel);
+        //mainPanel.add(difficultyInfoPanel);
 
         // Sets title, adds main panel, sets size, etc.
-        //this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(listener);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setTitle("Concentration");
         this.getContentPane().add(mainPanel);
-        this.setVisible(true);
-        this.setSize(1200, 800);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.pack();
         this.setLocationRelativeTo(null);
-        // this.setResizable(false);
+        this.setVisible(true);
     }
 
     /**
@@ -201,19 +180,39 @@ public class GameFrame extends JFrame implements Observer {
         return playerScoreLabel;
     }
 
+    /**
+     * Method calculates the width of the grid
+     * @param gd - the game session setting
+     * @return the size of the width
+     */
     private int xLength(GameSessionSetting gd) {
-    	return gd.getNumberOfCards() / 4;
+    	if(gd.getNumberOfCards() == 16 || gd.getNumberOfCards() == 32)
+    		return gd.getNumberOfCards() / 4;
+    	else
+    		return 8;
     }
 
+    /**
+     * Method calculates the height of the grid
+     * @param gd - the game session setting
+     * @return the size of the height
+     */
     private int yLength(GameSessionSetting gd) {
         return gd.getNumberOfCards() / xLength(gd);
     }
 
+    /**
+     * Method updates the frame 
+     * 
+     * @param ob - the observable object
+     * @param o - an object
+     */
     @Override
     public void update(Observable ob, Object o) {
         if (ob instanceof GameSession) {
             GameSession session = (GameSession) ob;
             String action = session.getUIAction();
+            //Disposes, updates, or repaints
             switch (action) {
                 case "dispose":
                     dispose();
@@ -230,7 +229,5 @@ public class GameFrame extends JFrame implements Observer {
                 return;
             difficultyInfoLabel.setText(((GameSessionDifficulty) ob).createUIString());
         }
-
     }
-
 }
