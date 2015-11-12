@@ -18,7 +18,7 @@ import java.util.TimerTask;
 
 public class SinglePlayerGameSession extends GameSession {
 
-    TimerTask timeUpdate = new TimerTask() {
+    private TimerTask timeUpdate = new TimerTask() {
         long start = System.currentTimeMillis();
 
         @Override

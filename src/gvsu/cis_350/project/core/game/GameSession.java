@@ -12,6 +12,15 @@ import java.util.Observer;
 public abstract class GameSession extends Observable implements Observer {
 
     protected Player sessionPlayer;
+
+    public Player getSessionPlayer() {
+        return sessionPlayer;
+    }
+
+    public GameSessionDifficulty getSessionDifficulty() {
+        return sessionDifficulty;
+    }
+
     protected int sessionMatches = 0;
     protected GameSessionDifficulty sessionDifficulty;
     protected boolean clickingEnabled = true;
