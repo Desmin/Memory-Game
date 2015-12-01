@@ -9,26 +9,17 @@ import java.util.Observable;
 
 public final class ObservableMouseListener extends Observable implements MouseListener {
 
-    private JLabel labelClicked;
-
     public ObservableMouseListener(GameSession observer) {
         this.addObserver(observer);
     }
 
-    /**
-     * @return the labelClicked
-     */
-    public JLabel getLabelClicked() {
-        return labelClicked;
-    }
 
     /**
      * @param labelClicked the labelClicked to set
      */
     public void setLabelClicked(JLabel labelClicked) {
-        this.labelClicked = labelClicked;
         this.setChanged();
-        this.notifyObservers();
+        this.notifyObservers(labelClicked);
     }
 
 

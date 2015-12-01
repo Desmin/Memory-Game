@@ -26,10 +26,10 @@ public class CardTest {
         assertNotEquals(card2, card3);
         assertNotEquals(card1, card3);
     }
-   
+
     @Test
-    public void testClicks(){
-    	Card card1 = new Card(CardType.BANANA);
+    public void testClicks() {
+        Card card1 = new Card(CardType.BANANA);
         Card card1_test = new Card(CardType.BANANA);
 
         assertEquals(card1.getCardType(), card1_test.getCardType());

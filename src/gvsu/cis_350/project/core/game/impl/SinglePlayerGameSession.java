@@ -1,22 +1,24 @@
 package gvsu.cis_350.project.core.game.impl;
 
 import gvsu.cis_350.project.core.Card;
+import gvsu.cis_350.project.core.Player;
 import gvsu.cis_350.project.core.game.GameSession;
-import gvsu.cis_350.project.core.game.GameSessionDifficulty;
-import gvsu.cis_350.project.core.game.event.ObservableActionListener;
-import gvsu.cis_350.project.core.game.event.ObservableMouseListener;
+import gvsu.cis_350.project.core.game.difficulty.GameSessionDifficulty;
+import gvsu.cis_350.project.core.game.difficulty.impl.SinglePlayerDifficulty;
 import gvsu.cis_350.project.io.FileIO;
 import gvsu.cis_350.project.ui.GameFrame;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Observable;
-import java.util.Timer;
 import java.util.TimerTask;
 
 public class SinglePlayerGameSession extends GameSession {
+
+    private Player sessionPlayer;
+
+    private SinglePlayerDifficulty sessionDifficulty;
+
+    private int sessionMatches = 0;
 
     private TimerTask timeUpdate = new TimerTask() {
         long start = System.currentTimeMillis();
@@ -25,57 +27,48 @@ public class SinglePlayerGameSession extends GameSession {
         public void run() {
             long timeElapsed = start - System.currentTimeMillis();
             start = System.currentTimeMillis();
-            long newTime = sessionDifficulty.getSessionTypeValue().longValue() + timeElapsed;
+            long newTime = sessionDifficulty.getPlayerValue().getValue().longValue() + timeElapsed;
             if (newTime <= 0) {
                 endGameWithLoss();
                 this.cancel();
             }
-            sessionDifficulty.setSessionTypeValue(newTime);
+            sessionDifficulty.setPlayerValue(newTime);
         }
 
     };
 
-    @Override
-    public boolean initialize(String sessionPlayerName, GameSessionDifficulty sessionDifficulty) {
-        this.sessionDifficulty = sessionDifficulty;
-        this.sessionPlayer = FileIO.loadPlayerData(sessionPlayerName);
-        if (this.sessionDifficulty.getSessionType().isTimed())
-            new Timer(true).schedule(timeUpdate, 0, 1000);
-        return true;
+    public Player getSessionPlayer() {
+        return sessionPlayer;
     }
 
     @Override
     public boolean reset() {
         sessionMatches = 0;
         sessionDifficulty.reset();
-        this.setUIAction("dispose");
-        new GameFrame(sessionPlayer.getName(), sessionDifficulty);
+        super.reset();
+        new GameFrame(sessionDifficulty, getSessionPlayer().getName());
         return true;
     }
 
     @Override
     public void quit(boolean restart) {
-        try {
-            FileIO.savePlayerData(sessionPlayer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.setUIAction("dispose");
-        if (!restart) {
-            System.exit(1);
-        } else
-            reset();
+        FileIO.savePlayerData(getSessionPlayer());
+        super.quit(restart);
     }
 
     @Override
-    public void update(Observable ob, Object o) {
-        if (ob instanceof ObservableActionListener) {
-            quit(((ObservableActionListener) ob).getFlag());
-        } else if (ob instanceof ObservableMouseListener) {
-            JLabel label = ((ObservableMouseListener) ob).getLabelClicked();
-            onCardClick(label);
-        }
+    public void addPlayerToGame(String username) {
+        sessionPlayer = FileIO.loadPlayerData(username);
+    }
 
+    @Override
+    public int getPlayerMatches() {
+        return sessionMatches;
+    }
+
+    @Override
+    public void addMatch() {
+        sessionMatches++;
     }
 
     public void onCardClick(JLabel label) {
@@ -124,7 +117,7 @@ public class SinglePlayerGameSession extends GameSession {
                     resetLastCardClicked();
                     setUIAction("repaint");
                     if (sessionMatches == sessionDifficulty.getSessionSetting().getMatchesNeededToWin()) {
-                        sessionPlayer.addWin();
+                        getSessionPlayer().addWin();
                         int response = JOptionPane.showConfirmDialog(label.getParent(),
                                 "You won! Do you wish to start again?", "Winner!", JOptionPane.YES_NO_OPTION,
                                 JOptionPane.INFORMATION_MESSAGE);
@@ -138,11 +131,11 @@ public class SinglePlayerGameSession extends GameSession {
                     }
                 } else {
                     if (sessionDifficulty.getSessionType().hasLimitedMatchAttempts()) {
-                        int matchesRemaining = sessionDifficulty.getSessionTypeValue().intValue();
+                        int matchesRemaining = sessionDifficulty.getPlayerValue().getValue().intValue();
                         matchesRemaining -= 1;
                         if (matchesRemaining <= 0)
                             endGameWithLoss();
-                        sessionDifficulty.setSessionTypeValue(matchesRemaining);
+                        sessionDifficulty.setPlayerValue(matchesRemaining);
                     }
                     card.setHasBeenClicked(false);
                     lastCardClicked.setHasBeenClicked(false);
@@ -159,18 +152,14 @@ public class SinglePlayerGameSession extends GameSession {
         }.execute();
     }
 
-    private void resetLastCardClicked() {
-        for (Entry<JLabel, Card> e : cardMap.entrySet()) {
-            if (e.getValue() == lastCardClicked) {
-                JLabel label = e.getKey();
-                if (e.getValue().hasBeenClicked())
-                    label.setIcon(Card.BLANK);
-                else
-                    label.setIcon(Card.BACK);
-                break;
-            }
-        }
-        lastCardClicked = null;
+    @Override
+    public void initialize(GameSessionDifficulty sessionDifficulty) {
+        if (sessionDifficulty instanceof SinglePlayerDifficulty) {
+            this.sessionDifficulty = (SinglePlayerDifficulty) sessionDifficulty;
+            if (this.sessionDifficulty.getSessionType().isTimed())
+                new java.util.Timer(true).schedule(timeUpdate, 0, 1000);
+        } else
+            throw new IllegalArgumentException("Incorrect difficulty given! SinglePlayerDifficulty required.");
     }
 
 }

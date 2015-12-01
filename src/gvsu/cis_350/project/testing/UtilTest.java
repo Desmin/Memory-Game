@@ -1,7 +1,7 @@
 package gvsu.cis_350.project.testing;
 
 import gvsu.cis_350.project.core.Card;
-import gvsu.cis_350.project.core.game.GameSessionSetting;
+import gvsu.cis_350.project.core.game.difficulty.GameSessionSetting;
 import gvsu.cis_350.project.utils.Util;
 import org.junit.Test;
 
@@ -18,9 +18,9 @@ public class UtilTest {
         List<Card> cards2 = Util.fetchRandomizedList(GameSessionSetting.MEDIUM);
         assertNotEquals(cards1, cards2);
     }
-    
-    @Test 
-    public void caseTest(){
+
+    @Test
+    public void caseTest() {
 
         String s2 = "Basic";
         String s3 = Util.toLowerFirstUC(s2);

@@ -2,12 +2,15 @@ package gvsu.cis_350.project.ui;
 
 import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.game.GameSession;
-import gvsu.cis_350.project.core.game.GameSessionDifficulty;
-import gvsu.cis_350.project.core.game.GameSessionSetting;
-import gvsu.cis_350.project.core.game.impl.SinglePlayerGameSession;
+import gvsu.cis_350.project.core.game.difficulty.GameSessionDifficulty;
+import gvsu.cis_350.project.core.game.difficulty.GameSessionSetting;
+import gvsu.cis_350.project.core.game.difficulty.SessionDifficultyValue;
 import gvsu.cis_350.project.core.game.event.ObservableActionListener;
 import gvsu.cis_350.project.core.game.event.ObservableMouseListener;
+import gvsu.cis_350.project.core.game.impl.SinglePlayerGameSession;
+import gvsu.cis_350.project.core.game.impl.TwoPlayerGameSession;
 import gvsu.cis_350.project.utils.Util;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -40,15 +43,23 @@ public class GameFrame extends JFrame implements Observer {
      */
     private JLabel difficultyInfoLabel;
 
+    private JLabel playerNameLabel;
+
     /**
      * Constructor creates cards for game, creates panels to add to frame, sets
      * up labels, and uses listeners for menu items
      */
-    public GameFrame(String name, GameSessionDifficulty difficulty) {
-
-    	//Creates and starts a new game session
-        SinglePlayerGameSession session = new SinglePlayerGameSession();
-        session.initialize(name, difficulty);
+    public GameFrame(GameSessionDifficulty difficulty, String... players) {
+        GameSession session;
+        if (players.length > 1) {
+            session = new TwoPlayerGameSession();
+        } else {
+            session = new SinglePlayerGameSession();
+        }
+        //Creates and starts a new game session
+        for (String name : players)
+            session.addPlayerToGame(name);
+        session.initialize(difficulty);
         session.addObserver(this);
         difficulty.addObserver(this);
 
@@ -56,17 +67,17 @@ public class GameFrame extends JFrame implements Observer {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(Color.WHITE);
-        
+
         // Creates panel to hold cards
         gridPanel = new JPanel(
-                new GridLayout(this.yLength(difficulty.getSessionSetting()), 
-                			   xLength(difficulty.getSessionSetting())));
+                new GridLayout(this.yLength(difficulty.getSessionSetting()),
+                        xLength(difficulty.getSessionSetting())));
         gridPanel.setBackground(Color.WHITE);
-        
+
         //Top panel holds the title and timing/limit info
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.WHITE);
-       
+
         //Bottom panel holds player info
         JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setBackground(Color.WHITE);
@@ -76,22 +87,22 @@ public class GameFrame extends JFrame implements Observer {
 
         //Menu bar
         JMenuBar menuBar = new JMenuBar();
-        
+
         //File menu
         JMenu fileMenu = new JMenu("File");
-       
+
         //About menu
         JMenu aboutMenu = new JMenu("About");
-       
+
         //New game menu item
         JMenuItem newGameItem = new JMenuItem("New Game");
-       
+
         //Quit menu item
         JMenuItem quitItem = new JMenuItem("Quit");
 
         //About menu item
         JMenuItem aboutItem = new JMenuItem("About Game");
-        
+
         //Version menu item
         JMenuItem versionItem = new JMenuItem("Version");
 
@@ -109,7 +120,7 @@ public class GameFrame extends JFrame implements Observer {
         quitItem.setName("quit_game");
         aboutItem.setName("about");
         versionItem.setName("version");
-        
+
         // Adds action listeners to each menu item
         ObservableActionListener listener = new ObservableActionListener(session);
         newGameItem.addActionListener(listener);
@@ -132,12 +143,12 @@ public class GameFrame extends JFrame implements Observer {
             map.put(label, card);
         });
         session.setCardMap(map);
-        
+
         //Sets up a font
         Font f = new Font("Courier", Font.BOLD, 20);
 
         //Creates player, message, and game labels
-        JLabel playerNameLabel = new JLabel("Player Name: " + name, SwingConstants.LEFT);
+        playerNameLabel = new JLabel("Player Name: " + players[0], SwingConstants.LEFT);
         playerNameLabel.setFont(f);
         playerScoreLabel = new JLabel("    Player Score: 0", SwingConstants.LEFT);
         playerScoreLabel.setFont(f);
@@ -182,18 +193,20 @@ public class GameFrame extends JFrame implements Observer {
 
     /**
      * Method calculates the width of the grid
+     *
      * @param gd - the game session setting
      * @return the size of the width
      */
     private int xLength(GameSessionSetting gd) {
-    	if(gd.getNumberOfCards() == 16 || gd.getNumberOfCards() == 32)
-    		return gd.getNumberOfCards() / 4;
-    	else
-    		return 8;
+        if (gd.getNumberOfCards() == 16 || gd.getNumberOfCards() == 32)
+            return gd.getNumberOfCards() / 4;
+        else
+            return 8;
     }
 
     /**
      * Method calculates the height of the grid
+     *
      * @param gd - the game session setting
      * @return the size of the height
      */
@@ -202,10 +215,10 @@ public class GameFrame extends JFrame implements Observer {
     }
 
     /**
-     * Method updates the frame 
-     * 
+     * Method updates the frame
+     *
      * @param ob - the observable object
-     * @param o - an object
+     * @param o  - an object
      */
     @Override
     public void update(Observable ob, Object o) {
@@ -218,16 +231,21 @@ public class GameFrame extends JFrame implements Observer {
                     dispose();
                     return;
                 case "update_score":
-                    getScoreLabel().setText("Player Score: " + session.getSessionMatches());
+                    getScoreLabel().setText("Player Score: " + session.getPlayerMatches());
                     return;
                 case "repaint":
                     revalidate();
                     repaint();
+                    return;
+                case "switch_player":
+                    playerNameLabel.setText(((TwoPlayerGameSession) session).getCurrentPlayer().getName());
+                    getScoreLabel().setText("Player Score: " + session.getPlayerMatches());
+                    return;
             }
         } else if (ob instanceof GameSessionDifficulty) {
             if (Objects.isNull(difficultyInfoLabel))
                 return;
-            difficultyInfoLabel.setText(((GameSessionDifficulty) ob).createUIString());
+            difficultyInfoLabel.setText(((GameSessionDifficulty) ob).createUIString((SessionDifficultyValue) o));
         }
     }
 }

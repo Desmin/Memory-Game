@@ -27,17 +27,21 @@ public class FileIO {
      * @param player The Player whose data we'll be saving.
      * @throws IOException
      */
-    public static void savePlayerData(Player player) throws IOException {
+    public static void savePlayerData(Player player) {
         logger.log(Level.INFO, "Saving data for user: " + player.getName());
         File dir = new File(SAVE_PATH);
         if (!dir.exists())
             dir.mkdir();
-        FileOutputStream fO = new FileOutputStream(SAVE_PATH + player.getName() + ".mgd");
+        try {
+            FileOutputStream fO = new FileOutputStream(SAVE_PATH + player.getName() + ".mgd");
 
-        DataOutputStream out = new DataOutputStream(fO);
-        out.writeInt(player.getWins());
-        out.close();
-        fO.close();
+            DataOutputStream out = new DataOutputStream(fO);
+            out.writeInt(player.getWins());
+            out.close();
+            fO.close();
+        } catch (Exception e) {
+
+        }
     }
 
     /**

@@ -26,7 +26,7 @@ public class PlayerTest {
         assertNotEquals(player1, player2);
         assertNotEquals(player3, player4);
     }
-    
+
     @Test
     public void winTest() {
         Player player1 = new Player("test", 8);

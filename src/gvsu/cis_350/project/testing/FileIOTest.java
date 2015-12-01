@@ -4,8 +4,6 @@ import gvsu.cis_350.project.core.Player;
 import gvsu.cis_350.project.io.FileIO;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -22,12 +20,8 @@ public class FileIOTest {
 
         //Creating the first user
         Player playerOne = new Player(test, 1);
-        try {
-            //Saving the first user
-            FileIO.savePlayerData(playerOne);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //Saving the first user
+        FileIO.savePlayerData(playerOne);
         Player playerTwo;
 
         //Loading the first user's data into a new player object

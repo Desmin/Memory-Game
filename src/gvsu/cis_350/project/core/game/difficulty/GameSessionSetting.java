@@ -1,4 +1,4 @@
-package gvsu.cis_350.project.core.game;
+package gvsu.cis_350.project.core.game.difficulty;
 
 import gvsu.cis_350.project.utils.Util;
 

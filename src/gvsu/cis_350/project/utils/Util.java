@@ -2,7 +2,7 @@ package gvsu.cis_350.project.utils;
 
 import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.Card.CardType;
-import gvsu.cis_350.project.core.game.GameSessionSetting;
+import gvsu.cis_350.project.core.game.difficulty.GameSessionSetting;
 
 import java.security.SecureRandom;
 import java.util.Collections;
@@ -69,11 +69,11 @@ public final class Util {
 
     public static String[] formatUserSelection(String[] users) {
         if (Objects.isNull(users))
-            return new String[] {};
-        String[] formattedUsers = new String[users.length+1];
+            return new String[]{};
+        String[] formattedUsers = new String[users.length + 1];
         formattedUsers[0] = "";
         for (int i = 0; i < users.length; i++)
-            formattedUsers[i+1] = (String)users[i].subSequence(0, users[i].indexOf("."));
+            formattedUsers[i + 1] = (String) users[i].subSequence(0, users[i].indexOf("."));
         return formattedUsers;
     }
 
