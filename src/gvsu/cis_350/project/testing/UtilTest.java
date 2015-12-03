@@ -19,15 +19,4 @@ public class UtilTest {
         assertNotEquals(cards1, cards2);
     }
 
-    @Test
-    public void caseTest() {
-
-        String s2 = "Basic";
-        String s3 = Util.toLowerFirstUC(s2);
-        assertEquals(s2, s3);
-
-        String s4 = "B*sic";
-        assertNotEquals(s4, s2);
-    }
-
 }
