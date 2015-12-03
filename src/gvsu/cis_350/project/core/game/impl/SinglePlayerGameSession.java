@@ -41,6 +41,10 @@ public class SinglePlayerGameSession extends GameSession {
         return sessionPlayer;
     }
 
+    public SinglePlayerDifficulty getSessionDifficulty() {
+        return sessionDifficulty;
+    }
+
     @Override
     public boolean reset() {
         sessionMatches = 0;
