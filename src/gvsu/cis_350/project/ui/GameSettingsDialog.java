@@ -4,6 +4,7 @@ import gvsu.cis_350.project.core.game.difficulty.GameSessionDifficulty;
 import gvsu.cis_350.project.core.game.difficulty.GameSessionSetting;
 import gvsu.cis_350.project.core.game.difficulty.GameSessionType;
 import gvsu.cis_350.project.core.game.difficulty.impl.SinglePlayerDifficulty;
+import gvsu.cis_350.project.core.game.difficulty.impl.TwoPlayerDifficulty;
 import gvsu.cis_350.project.utils.Util;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ import java.io.File;
  */
 public class GameSettingsDialog extends JFrame {
 
+	JFrame frame;
     /**
      * Combo box for difficulty level
      */
@@ -35,57 +37,56 @@ public class GameSettingsDialog extends JFrame {
     private JComboBox<GameSessionType> gameSessionType;
 
     /**
-     * Combo box for name input
+     * Combo box for number of players input
      */
-    private JComboBox<String> userSelection;
-
+    private JComboBox<String> numberPlayers;
+    private JPanel panel;
+    private JButton button; 
+	private JLabel background;
+	
     /**
      * Constructor adds panels, combo boxes, and labels to
      * dialog box
      */
     public GameSettingsDialog() {
-        this.setTitle("Setup Memory Game");
-        this.setBackground(Color.WHITE);
-
+    	frame = this;
         //Creates combo boxes
         difficultyLevel = new JComboBox<>(GameSessionSetting.values());
         difficultyLevel.setBackground(Color.WHITE);
         gameSessionType = new JComboBox<>(GameSessionType.values());
         gameSessionType.setBackground(Color.WHITE);
-
+        numberPlayers = new JComboBox<>();
+        numberPlayers.setBackground(Color.WHITE);
+        numberPlayers.addItem("Single Player");
+        numberPlayers.addItem("Two Player");
+        
         //Creates panels and buttons for dialog box
-        JLabel background = new JLabel(new ImageIcon("resources/thinkingImg.jpg"));
-        JPanel panel = new JPanel(new GridLayout(3, 2));
+        background = new JLabel(new ImageIcon("resources/thinkingImg.jpg"));
         JPanel titlePanel = new JPanel(new FlowLayout());
-        JButton startButton = new JButton("Start Game");
-        startButton.addActionListener(new ButtonListener());
-
-        //Creates labels and adds font type
         Font f = new Font("Courier", Font.BOLD, 20);
-        JLabel name = new JLabel("Player Name:");
         JLabel title = new JLabel("Memory Game Setup");
         title.setFont(f);
+        background.setLayout(null);
+        background.add(titlePanel);
+        button = new JButton("CONTINUE...");
+        button.addActionListener(new Listener());
+        
+        panel = new JPanel(new GridLayout(3, 2));        
+        
+        //Creates labels and adds font type
+        JLabel numberOfPlayers = new JLabel("Number of Players:");
         JLabel difficultyLabel = new JLabel("Choose Difficulty:");
         JLabel typeLabel = new JLabel("Choose Type:");
 
-        //Sets up combo box for user name
-        userSelection = new JComboBox<>(Util.formatUserSelection(new File("./data/").list()));
-        userSelection.setEditable(true);
-
-        //Adds panels and buttons to background
-        background.setLayout(null);
-        background.add(titlePanel);
-        background.add(panel);
-        background.add(startButton);
-
+          
         //Size and location of panel
-        panel.setSize(390, 70);
+        panel.setSize(390, 100);
         panel.setLocation(200, 130);
         panel.setBackground(Color.WHITE);
 
         //Adds labels to main panel
-        panel.add(name);
-        panel.add(userSelection);
+        panel.add(numberOfPlayers);
+        panel.add(numberPlayers);
         panel.add(difficultyLabel);
         panel.add(difficultyLevel);
         panel.add(typeLabel);
@@ -97,10 +98,11 @@ public class GameSettingsDialog extends JFrame {
         titlePanel.setLocation(235, 70);
         titlePanel.add(title);
 
-        //Sets location and size of button
-        startButton.setSize(100, 30);
-        startButton.setLocation(350, 220);
-        startButton.setBackground(Color.YELLOW);
+        background.add(button);
+        background.add(panel);
+        button.setSize(150, 30);
+        button.setLocation(350, 240);
+        button.setBackground(Color.YELLOW);
 
         //Sets dialog size and location
         this.getContentPane().add(background);
@@ -115,7 +117,7 @@ public class GameSettingsDialog extends JFrame {
             public void windowClosing(WindowEvent e) {
                 System.exit(1);
             }
-        });
+        });        
     }
 
     /**
@@ -132,7 +134,7 @@ public class GameSettingsDialog extends JFrame {
      * the user name is valid and creates a new game with the given
      * difficulty parameters
      */
-    private class ButtonListener implements ActionListener {
+    private class Listener implements ActionListener {
         /**
          * Method determines what to have done when the start button
          * is clicked
@@ -141,20 +143,16 @@ public class GameSettingsDialog extends JFrame {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            //Creates difficulty
-            GameSessionDifficulty dif = new SinglePlayerDifficulty(
-                    (GameSessionSetting) difficultyLevel.getSelectedItem(),
-                    (GameSessionType) gameSessionType.getSelectedItem());
-            String user = (String) userSelection.getSelectedItem();
-            //Makes sure the name is not empty
-            if (!user.trim().equals(""))
-                new GameFrame(dif, user);
-            else {
-                userSelection.grabFocus();
-                return;
-            }
-            //Disposes of the dialog frame
-            dispose();
+        	frame.setVisible(false);
+        	if((String)numberPlayers.getSelectedItem() == "Single Player")
+        		new GameNameDialog(new SinglePlayerDifficulty(
+        				(GameSessionSetting)difficultyLevel.getSelectedItem(),
+                        (GameSessionType)gameSessionType.getSelectedItem()), frame);
+        	
+        	else
+        		new GameNameDialog(new TwoPlayerDifficulty(
+        				(GameSessionSetting)difficultyLevel.getSelectedItem(),
+                        (GameSessionType)gameSessionType.getSelectedItem()),frame);
         }
     }
 }
