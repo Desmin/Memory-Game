@@ -20,6 +20,7 @@ public class CardTest {
         Card card1 = new Card(CardType.BANANA);
         Card card2 = new Card(CardType.ORANGE);
         Card card3 = new Card(CardType.RED_APPLE);
+        Card car2_test = new Card(CardType.ORANGE);
         Card card1_test = new Card(CardType.BANANA);
 
         assertEquals(card1, card1_test);

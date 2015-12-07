@@ -1,5 +1,9 @@
 package gvsu.cis_350.project.core.game.difficulty;
 
+import gvsu.cis_350.project.core.game.difficulty.impl.SinglePlayerDifficulty;
+import gvsu.cis_350.project.core.game.difficulty.impl.TwoPlayerDifficulty;
+
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
@@ -43,6 +47,18 @@ public class GameSessionDifficulty extends Observable {
             toReturn = "    " + givenPlayerValue.getValue().intValue() + " match attempts remaining!";
         }
         return toReturn;
+    }
+
+    public static GameSessionDifficulty createRandomDifficulty(String expectedClass) {
+        SecureRandom ran = new SecureRandom();
+        GameSessionSetting setting = GameSessionSetting.values()[ran.nextInt(GameSessionSetting.values().length)];
+        GameSessionType type = GameSessionType.values()[ran.nextInt(GameSessionType.values().length)];
+        if (expectedClass.equals("two_player"))
+            return new TwoPlayerDifficulty(setting, type);
+        else if (expectedClass.equals("one_player"))
+            return new SinglePlayerDifficulty(setting, type);
+        else
+            return new GameSessionDifficulty(setting, type);
     }
 
 }

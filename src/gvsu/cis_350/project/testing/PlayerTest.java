@@ -40,8 +40,20 @@ public class PlayerTest {
 
         player3.addWin();
 
-        assertNotEquals(player2, player1);
-        assertEquals(player1, player3);
+        assertNotEquals(player2.getWins(), player1.getWins());
+        assertEquals(player1.getWins(), player3.getWins());
+    }
+    
+    @Test
+    public void namesTest()
+    {
+    	Player player1 = new Player("", 8);
+        Player player2 = new Player(" ", 10);
+        Player player3 = new Player("  ", 8);
+        
+        assertEquals(player1.getName(), "");
+        assertNotEquals(player2.getName(), player1.getName());
+        assertNotEquals(player2.getName(), player3.getName());
     }
 
 }
