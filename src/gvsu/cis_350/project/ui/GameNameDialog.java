@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-
 import javax.swing.*;
 import gvsu.cis_350.project.core.game.difficulty.GameSessionDifficulty;
 import gvsu.cis_350.project.core.game.difficulty.GameSessionSetting;
@@ -76,9 +75,6 @@ public class GameNameDialog extends JFrame implements ActionListener{
 		this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setVisible(true);
-        
-        
-        
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -114,6 +110,5 @@ public class GameNameDialog extends JFrame implements ActionListener{
 			this.dispose();
 			f.setVisible(true);
 		}
-			
 	}
 }

@@ -85,5 +85,4 @@ public abstract class GameSession extends Observable implements Observer {
         }
         lastCardClicked = null;
     }
-
 }

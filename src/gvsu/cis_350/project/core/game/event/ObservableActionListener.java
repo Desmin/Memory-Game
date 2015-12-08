@@ -65,8 +65,8 @@ public final class ObservableActionListener extends Observable implements Action
             /*
       Game version - version, date, and authors
      */
-            String VERSION_INFO = "Version: 2.0\n" +
-                    "Date: 11/12/15\n" +
+            String VERSION_INFO = "Version: 3.0\n" +
+                    "Date: 12/10/15\n" +
                     "Authors: Desmin Little, Emily Theis, Nick Spruit";
             JOptionPane.showMessageDialog(item.getParent(), VERSION_INFO, "VERSION", 1);
         }
