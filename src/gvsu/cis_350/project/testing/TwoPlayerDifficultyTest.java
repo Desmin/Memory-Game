@@ -6,7 +6,7 @@ import gvsu.cis_350.project.core.game.difficulty.impl.TwoPlayerDifficulty;
 
 import org.junit.Test;
 
-public class TwoPlayerDifficultyTest {
+/*public class TwoPlayerDifficultyTest {
 
 	@Test
 	public void test() {
@@ -18,4 +18,4 @@ public class TwoPlayerDifficultyTest {
 		assertEquals(t2.getPlayerOneValue(), t1.getPlayerOneValue());
 	}
 
-}
+}*/
