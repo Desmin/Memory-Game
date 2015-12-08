@@ -31,15 +31,15 @@ public class TwoPlayerGameSessionTest {
         Assert.assertEquals(player2, session.getCurrentPlayer());
     }*/
 	
-	/*@Test
+	@Test
     public void testPlayerGetterAndSetterFailure() {
         TwoPlayerGameSession session = new TwoPlayerGameSession();
         Player player = FileIO.loadPlayerData("Des");
         session.addPlayerToGame("desmin");
         Assert.assertNotEquals(player, session.getCurrentPlayer());
-    }*/
+    }
 	
-	@Test
+	/*@Test
     public void testAddMatchAndMatchGetter() {
         TwoPlayerGameSession session = new TwoPlayerGameSession();
         //session.setCurrentPlayerValue(1);
@@ -48,7 +48,7 @@ public class TwoPlayerGameSessionTest {
         Assert.assertNotEquals(0, session.getPlayerMatches());
         session.addMatch();
         Assert.assertEquals(2, session.getPlayerMatches());
-    }
+    }*/
 	
 	@Test(expected = IllegalArgumentException.class)
     public void testInitializeFailure() {
