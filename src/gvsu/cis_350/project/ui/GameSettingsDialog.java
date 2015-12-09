@@ -25,12 +25,16 @@ import java.io.File;
  */
 public class GameSettingsDialog extends JFrame {
 
+	/**
+	 * Frame holds the main input settings
+	 */
 	JFrame frame;
-    /**
+    
+	/**
      * Combo box for difficulty level
      */
     private JComboBox<GameSessionSetting> difficultyLevel;
-
+    
     /**
      * Combo box for session type
      */
@@ -40,8 +44,20 @@ public class GameSettingsDialog extends JFrame {
      * Combo box for number of players input
      */
     private JComboBox<String> numberPlayers;
+    
+    /**
+     * Panels for holding input fields
+     */
     private JPanel panel;
-    private JButton button; 
+    
+    /**
+     * Continue button
+     */
+    private JButton button;
+    
+    /**
+     * Background label for image
+     */
 	private JLabel background;
 	
     /**
@@ -98,6 +114,7 @@ public class GameSettingsDialog extends JFrame {
         titlePanel.setLocation(235, 70);
         titlePanel.add(title);
 
+        //Adds background and panel, sets location of button
         background.add(button);
         background.add(panel);
         button.setSize(150, 30);
@@ -144,6 +161,7 @@ public class GameSettingsDialog extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
         	frame.setVisible(false);
+        	//Creates a dialog for player name(s) input
         	if((String)numberPlayers.getSelectedItem() == "Single Player")
         		new GameNameDialog(new SinglePlayerDifficulty(
         				(GameSessionSetting)difficultyLevel.getSelectedItem(),

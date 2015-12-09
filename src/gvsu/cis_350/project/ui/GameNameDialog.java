@@ -15,16 +15,59 @@ import gvsu.cis_350.project.core.game.difficulty.impl.SinglePlayerDifficulty;
 import gvsu.cis_350.project.core.game.difficulty.impl.TwoPlayerDifficulty;
 import gvsu.cis_350.project.utils.Util;
 
+/**
+ * This class creates a name panel for 1 or two players.
+ * Either one or two players can enter their names, or select 
+ * from a combo box. The game starts once the user clicks the 
+ * "Start" button.
+ * 
+ * @author Nick Spruit
+ * @version 12/10/15
+ */
 public class GameNameDialog extends JFrame implements ActionListener{	
+	
+	/**
+	 * Panel for combobox and labels
+	 */
 	private JPanel namePanel;
+	
+	/**
+	 * Refers to the game settings dialog frame 
+	 */
 	JFrame f;
+	
+	/**
+	 * Buttons for canceling, starting game
+	 */
 	private JButton startButton, cancelButton;
+	
+	/**
+	 * Combo boxes for at most two players
+	 */
 	private JComboBox nameBox1, nameBox2;
+	
+	/**
+	 * Difficulty of game
+	 */
 	private GameSessionDifficulty dif;
+	
+	/**
+	 * Keeps track of whether the game is single or double player
+	 */
 	private boolean singlePlayer;
+	
+	/**
+	 * Constructor creates adds elements to the frame based on whether 
+	 * the game is single or double player.
+	 * 
+	 * @param d - game difficulty
+	 * @param f - frame that called this dialog
+	 */
 	public GameNameDialog(GameSessionDifficulty d, JFrame f){
 		this.f = f;
 		dif = d;
+		
+		//Creates panels and buttons
 		namePanel = new JPanel();
 		namePanel.setBackground(Color.WHITE);
 		startButton = new JButton("START GAME");
@@ -34,7 +77,9 @@ public class GameNameDialog extends JFrame implements ActionListener{
 		cancelButton.addActionListener(this);
 		cancelButton.setBackground(Color.RED);
 		
+		//Single player game
 		if(dif instanceof SinglePlayerDifficulty){
+			//Creates a panel to input a single player's name
 			singlePlayer = true;
 			namePanel.setLayout(new GridLayout(2,2));
 			JLabel playerLabel = new JLabel("Name of Player: ");
@@ -44,7 +89,9 @@ public class GameNameDialog extends JFrame implements ActionListener{
 			namePanel.add(playerLabel);
 			namePanel.add(nameBox1);
 		}
+		//Two player game
 		else{
+			//Creates a panel to input two player's names (2 combo boxes)
 			singlePlayer = false;
 			namePanel.setLayout(new GridLayout(3,2));
 			String player1, player2;
@@ -63,9 +110,11 @@ public class GameNameDialog extends JFrame implements ActionListener{
 			namePanel.add(playerLabel2);
 			namePanel.add(nameBox2);
 		}
+		//Adds buttons
 		namePanel.add(cancelButton);
 		namePanel.add(startButton);
 		
+		//Resizes panel
 		this.getContentPane().add(namePanel);
 		if(singlePlayer)
 			this.setSize(400, 100);
@@ -76,10 +125,18 @@ public class GameNameDialog extends JFrame implements ActionListener{
         this.setResizable(false);
         this.setVisible(true);
 	}
+	/**
+	 * Method determines what is done when the use clicks 
+	 * the start or cancel button
+	 * 
+	 *  @param e - the action event fired
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//User wants to start game
 		if(e.getSource() == startButton){
 			f.setVisible(false);
+			//Makes sure the single player's name is valid
 			if(singlePlayer){
 				String player1 = (String)nameBox1.getSelectedItem(); 
 				if(player1.trim().equals(""))
@@ -90,6 +147,7 @@ public class GameNameDialog extends JFrame implements ActionListener{
 					f.dispose();
 				}				
 			}
+			//Makes sure each of the player's names are valid
 			else{
 				String player1 = (String)nameBox1.getSelectedItem();
 				String player2 = (String)nameBox2.getSelectedItem();
@@ -106,6 +164,7 @@ public class GameNameDialog extends JFrame implements ActionListener{
 				}
 			}
 		}
+		//Cancel button disposes of frame and sets the game setting dialog to visible
 		else{
 			this.dispose();
 			f.setVisible(true);

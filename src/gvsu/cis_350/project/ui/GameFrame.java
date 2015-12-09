@@ -43,6 +43,13 @@ public class GameFrame extends JFrame implements Observer {
      */
     private JLabel difficultyInfoLabel;
 
+    /**
+     * Main panel
+     */
+    private JPanel mainPanel;
+    /**
+     * Player name label
+     */
     private JLabel playerNameLabel;
 
     /**
@@ -51,6 +58,11 @@ public class GameFrame extends JFrame implements Observer {
      */
     public GameFrame(GameSessionDifficulty difficulty, String... players) {
         GameSession session;
+     // Creates panel to hold cards
+        gridPanel = new JPanel(
+               new GridLayout(this.yLength(difficulty.getSessionSetting()),
+                        xLength(difficulty.getSessionSetting())));
+        gridPanel.setBackground(Color.WHITE);
         if (players.length > 1) {
             session = new TwoPlayerGameSession();
         } else {
@@ -64,16 +76,11 @@ public class GameFrame extends JFrame implements Observer {
         difficulty.addObserver(this);
 
         // Create main underlying panel
-        JPanel mainPanel = new JPanel();
+        mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(Color.WHITE);
 
-        // Creates panel to hold cards
-        gridPanel = new JPanel(
-                new GridLayout(this.yLength(difficulty.getSessionSetting()),
-                        xLength(difficulty.getSessionSetting())));
-        gridPanel.setBackground(Color.WHITE);
-
+        
         //Top panel holds the title and timing/limit info
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.WHITE);
@@ -87,7 +94,8 @@ public class GameFrame extends JFrame implements Observer {
 
         //Menu bar
         JMenuBar menuBar = new JMenuBar();
-
+        menuBar.setBackground(Color.WHITE);
+        
         //File menu
         JMenu fileMenu = new JMenu("File");
 
@@ -236,6 +244,7 @@ public class GameFrame extends JFrame implements Observer {
                 case "repaint":
                     revalidate();
                     repaint();
+                
                     return;
                 case "switch_player":
                     playerNameLabel.setText(((TwoPlayerGameSession) session).getCurrentPlayer().getName());
