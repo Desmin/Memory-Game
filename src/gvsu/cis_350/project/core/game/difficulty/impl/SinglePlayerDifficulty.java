@@ -5,6 +5,8 @@ import gvsu.cis_350.project.core.game.difficulty.GameSessionSetting;
 import gvsu.cis_350.project.core.game.difficulty.GameSessionType;
 import gvsu.cis_350.project.core.game.difficulty.SessionDifficultyValue;
 
+import java.util.Objects;
+
 /**
  * Created by Desmin Little on 11/29/2015.
  */
@@ -22,19 +24,20 @@ public class SinglePlayerDifficulty extends GameSessionDifficulty {
         return playerValue;
     }
 
-    public void setPlayerValue(long playerValue) {
-        this.playerValue.setValue(playerValue);
-        this.setChanged();
-        this.notifyObservers(this.playerValue);
-    }
-
     public void setPlayerValue(int playerValue) {
         this.playerValue.setValue(playerValue);
         this.setChanged();
         this.notifyObservers(playerValue);
     }
 
+    public void setPlayerValue(long playerValue) {
+        this.playerValue.setValue(playerValue);
+        this.setChanged();
+        this.notifyObservers(this.playerValue);
+    }
+
     public void reset() {
-        playerValue.reset(this);
+        if (Objects.nonNull(playerValue))
+            playerValue.reset(this);
     }
 }

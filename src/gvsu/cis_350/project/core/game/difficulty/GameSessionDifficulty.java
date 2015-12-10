@@ -18,6 +18,18 @@ public class GameSessionDifficulty extends Observable {
         this.sessionType = type;
     }
 
+    public static GameSessionDifficulty createRandomDifficulty(String expectedClass) {
+        SecureRandom ran = new SecureRandom();
+        GameSessionSetting setting = GameSessionSetting.values()[ran.nextInt(GameSessionSetting.values().length)];
+        GameSessionType type = GameSessionType.values()[ran.nextInt(GameSessionType.values().length)];
+        if (expectedClass.equals("two_player"))
+            return new TwoPlayerDifficulty(setting, type);
+        else if (expectedClass.equals("one_player"))
+            return new SinglePlayerDifficulty(setting, type);
+        else
+            return new GameSessionDifficulty(setting, type);
+    }
+
     public GameSessionType getSessionType() {
         return sessionType;
     }
@@ -47,18 +59,6 @@ public class GameSessionDifficulty extends Observable {
             toReturn = "    " + givenPlayerValue.getValue().intValue() + " match attempts remaining!";
         }
         return toReturn;
-    }
-
-    public static GameSessionDifficulty createRandomDifficulty(String expectedClass) {
-        SecureRandom ran = new SecureRandom();
-        GameSessionSetting setting = GameSessionSetting.values()[ran.nextInt(GameSessionSetting.values().length)];
-        GameSessionType type = GameSessionType.values()[ran.nextInt(GameSessionType.values().length)];
-        if (expectedClass.equals("two_player"))
-            return new TwoPlayerDifficulty(setting, type);
-        else if (expectedClass.equals("one_player"))
-            return new SinglePlayerDifficulty(setting, type);
-        else
-            return new GameSessionDifficulty(setting, type);
     }
 
 }

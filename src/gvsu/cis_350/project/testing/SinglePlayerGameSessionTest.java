@@ -4,12 +4,10 @@ import gvsu.cis_350.project.core.Card;
 import gvsu.cis_350.project.core.Player;
 import gvsu.cis_350.project.core.game.difficulty.GameSessionDifficulty;
 import gvsu.cis_350.project.core.game.difficulty.impl.SinglePlayerDifficulty;
-import gvsu.cis_350.project.core.game.difficulty.impl.TwoPlayerDifficulty;
 import gvsu.cis_350.project.core.game.impl.SinglePlayerGameSession;
 import gvsu.cis_350.project.io.FileIO;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.internal.runners.statements.ExpectException;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -58,7 +56,7 @@ public class SinglePlayerGameSessionTest {
     public void testInitialize() {
         SinglePlayerGameSession session = new SinglePlayerGameSession();
         SinglePlayerDifficulty difficulty
-                = (SinglePlayerDifficulty)GameSessionDifficulty.createRandomDifficulty("one_player");
+                = (SinglePlayerDifficulty) GameSessionDifficulty.createRandomDifficulty("one_player");
         session.initialize(difficulty);
         Assert.assertEquals(difficulty, session.getSessionDifficulty());
 

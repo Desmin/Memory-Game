@@ -26,7 +26,6 @@ public class TwoPlayerGameSession extends GameSession {
     private int playerOneMatches, playerTwoMatches;
 
     private TwoPlayerDifficulty sessionDifficulty;
-
     private TimerTask timeUpdate = new TimerTask() {
         long start = System.currentTimeMillis();
 
@@ -43,6 +42,10 @@ public class TwoPlayerGameSession extends GameSession {
         }
 
     };
+
+    public TwoPlayerDifficulty getSessionDifficulty() {
+        return sessionDifficulty;
+    }
 
     public SessionDifficultyValue getCurrentPlayerValue() {
         return getCurrentPlayer().equals(playerOne) ? sessionDifficulty.getPlayerOneValue() : sessionDifficulty.getPlayerTwoValue();

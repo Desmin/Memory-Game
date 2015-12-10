@@ -24,6 +24,12 @@ public class TwoPlayerDifficulty extends GameSessionDifficulty {
         return playerOneValue;
     }
 
+    public void setPlayerOneValue(int playerOneValue) {
+        this.playerOneValue.setValue(playerOneValue);
+        this.setChanged();
+        this.notifyObservers(this.playerOneValue);
+    }
+
     public void setPlayerOneValue(long playerOneValue) {
         this.playerOneValue.setValue(playerOneValue);
         this.setChanged();
@@ -38,12 +44,6 @@ public class TwoPlayerDifficulty extends GameSessionDifficulty {
         this.playerTwoValue.setValue(playerTwoValue);
         this.setChanged();
         this.notifyObservers(this.playerTwoValue);
-    }
-
-    public void setPlayerOneValue(int playerOneValue) {
-        this.playerOneValue.setValue(playerOneValue);
-        this.setChanged();
-        this.notifyObservers(this.playerOneValue);
     }
 
     public void reset() {

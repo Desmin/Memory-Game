@@ -58,9 +58,9 @@ public class GameFrame extends JFrame implements Observer {
      */
     public GameFrame(GameSessionDifficulty difficulty, String... players) {
         GameSession session;
-     // Creates panel to hold cards
+        // Creates panel to hold cards
         gridPanel = new JPanel(
-               new GridLayout(this.yLength(difficulty.getSessionSetting()),
+                new GridLayout(this.yLength(difficulty.getSessionSetting()),
                         xLength(difficulty.getSessionSetting())));
         gridPanel.setBackground(Color.WHITE);
         if (players.length > 1) {
@@ -80,7 +80,7 @@ public class GameFrame extends JFrame implements Observer {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(Color.WHITE);
 
-        
+
         //Top panel holds the title and timing/limit info
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.WHITE);
@@ -95,7 +95,7 @@ public class GameFrame extends JFrame implements Observer {
         //Menu bar
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(Color.WHITE);
-        
+
         //File menu
         JMenu fileMenu = new JMenu("File");
 
@@ -244,7 +244,7 @@ public class GameFrame extends JFrame implements Observer {
                 case "repaint":
                     revalidate();
                     repaint();
-                
+
                     return;
                 case "switch_player":
                     playerNameLabel.setText(((TwoPlayerGameSession) session).getCurrentPlayer().getName());

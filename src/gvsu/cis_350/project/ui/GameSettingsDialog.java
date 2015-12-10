@@ -1,11 +1,9 @@
 package gvsu.cis_350.project.ui;
 
-import gvsu.cis_350.project.core.game.difficulty.GameSessionDifficulty;
 import gvsu.cis_350.project.core.game.difficulty.GameSessionSetting;
 import gvsu.cis_350.project.core.game.difficulty.GameSessionType;
 import gvsu.cis_350.project.core.game.difficulty.impl.SinglePlayerDifficulty;
 import gvsu.cis_350.project.core.game.difficulty.impl.TwoPlayerDifficulty;
-import gvsu.cis_350.project.utils.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 /**
  * This class represents a dialog that starts the game. It asks for the user's
@@ -25,16 +22,16 @@ import java.io.File;
  */
 public class GameSettingsDialog extends JFrame {
 
-	/**
-	 * Frame holds the main input settings
-	 */
-	JFrame frame;
-    
-	/**
+    /**
+     * Frame holds the main input settings
+     */
+    JFrame frame;
+
+    /**
      * Combo box for difficulty level
      */
     private JComboBox<GameSessionSetting> difficultyLevel;
-    
+
     /**
      * Combo box for session type
      */
@@ -44,28 +41,28 @@ public class GameSettingsDialog extends JFrame {
      * Combo box for number of players input
      */
     private JComboBox<String> numberPlayers;
-    
+
     /**
      * Panels for holding input fields
      */
     private JPanel panel;
-    
+
     /**
      * Continue button
      */
     private JButton button;
-    
+
     /**
      * Background label for image
      */
-	private JLabel background;
-	
+    private JLabel background;
+
     /**
      * Constructor adds panels, combo boxes, and labels to
      * dialog box
      */
     public GameSettingsDialog() {
-    	frame = this;
+        frame = this;
         //Creates combo boxes
         difficultyLevel = new JComboBox<>(GameSessionSetting.values());
         difficultyLevel.setBackground(Color.WHITE);
@@ -75,7 +72,7 @@ public class GameSettingsDialog extends JFrame {
         numberPlayers.setBackground(Color.WHITE);
         numberPlayers.addItem("Single Player");
         numberPlayers.addItem("Two Player");
-        
+
         //Creates panels and buttons for dialog box
         background = new JLabel(new ImageIcon("resources/thinkingImg.jpg"));
         JPanel titlePanel = new JPanel(new FlowLayout());
@@ -86,15 +83,15 @@ public class GameSettingsDialog extends JFrame {
         background.add(titlePanel);
         button = new JButton("CONTINUE...");
         button.addActionListener(new Listener());
-        
-        panel = new JPanel(new GridLayout(3, 2));        
-        
+
+        panel = new JPanel(new GridLayout(3, 2));
+
         //Creates labels and adds font type
         JLabel numberOfPlayers = new JLabel("Number of Players:");
         JLabel difficultyLabel = new JLabel("Choose Difficulty:");
         JLabel typeLabel = new JLabel("Choose Type:");
 
-          
+
         //Size and location of panel
         panel.setSize(390, 100);
         panel.setLocation(200, 130);
@@ -134,7 +131,7 @@ public class GameSettingsDialog extends JFrame {
             public void windowClosing(WindowEvent e) {
                 System.exit(1);
             }
-        });        
+        });
     }
 
     /**
@@ -160,17 +157,17 @@ public class GameSettingsDialog extends JFrame {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-        	frame.setVisible(false);
-        	//Creates a dialog for player name(s) input
-        	if((String)numberPlayers.getSelectedItem() == "Single Player")
-        		new GameNameDialog(new SinglePlayerDifficulty(
-        				(GameSessionSetting)difficultyLevel.getSelectedItem(),
-                        (GameSessionType)gameSessionType.getSelectedItem()), frame);
-        	
-        	else
-        		new GameNameDialog(new TwoPlayerDifficulty(
-        				(GameSessionSetting)difficultyLevel.getSelectedItem(),
-                        (GameSessionType)gameSessionType.getSelectedItem()),frame);
+            frame.setVisible(false);
+            //Creates a dialog for player name(s) input
+            if (numberPlayers.getSelectedItem() == "Single Player")
+                new GameNameDialog(new SinglePlayerDifficulty(
+                        (GameSessionSetting) difficultyLevel.getSelectedItem(),
+                        (GameSessionType) gameSessionType.getSelectedItem()), frame);
+
+            else
+                new GameNameDialog(new TwoPlayerDifficulty(
+                        (GameSessionSetting) difficultyLevel.getSelectedItem(),
+                        (GameSessionType) gameSessionType.getSelectedItem()), frame);
         }
     }
 }
